@@ -1,1 +1,42 @@
-
+{
+  "cards": [
+    {
+      "id": "cladsfbh2",
+      "name": "Pilotage M00",
+      "url": "",
+      "desc": "Suivi de production, tableau par jour, export CSV.",
+      "cat": "Pilotage",
+      "color": "#5b8dd6"
+    },
+    {
+      "id": "cjlbumrvc",
+      "name": "Complet Conforme",
+      "url": "https://methodelogistiquesncf-boop.github.io/completconforme/",
+      "desc": "Contrôle de conformité des kits, gestion des accès par module.",
+      "cat": "Qualité",
+      "color": "#4caf7d"
+    },
+    {
+      "id": "c1351ehqa",
+      "name": "Éditeur de logigramme",
+      "url": "",
+      "desc": "Création de logigrammes avec routage libre des connexions.",
+      "cat": "Outils perso",
+      "color": "#9b8ee0"
+    },
+    {
+      "id": "ci2mpuc2n",
+      "name": "Analyse Excel F-Activités",
+      "url": "",
+      "desc": "Analyse des fichiers F-Activités Équipes et A-Delta Pièces Kits.",
+      "cat": "Excel / RFX",
+      "color": "#e8a33d"
+    }
+  ],
+  "categories": [
+    "Pilotage",
+    "Qualité",
+    "Excel / RFX",
+    "Outils perso"
+  ]
+}
