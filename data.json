@@ -23,14 +23,6 @@
       "desc": "Création de logigrammes avec routage libre des connexions.",
       "cat": "Outils perso",
       "color": "#9b8ee0"
-    },
-    {
-      "id": "ci2mpuc2n",
-      "name": "Analyse Excel F-Activités",
-      "url": "",
-      "desc": "Analyse des fichiers F-Activités Équipes et A-Delta Pièces Kits.",
-      "cat": "Excel / RFX",
-      "color": "#e8a33d"
     }
   ],
   "categories": [
