@@ -15,6 +15,14 @@
       "desc": "Création de logigrammes avec routage libre des connexions.",
       "cat": "Outils perso",
       "color": "#9b8ee0"
+    },
+    {
+      "id": "cfmyjgloo",
+      "name": "Correcteur",
+      "url": "https://methodelogistiquesncf-boop.github.io/Correcteurs/",
+      "desc": "",
+      "cat": "Outils perso",
+      "color": "#5b8dd6"
     }
   ],
   "categories": [
