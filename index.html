@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio // Méthode Logistique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #10141b;
+    --panel: #171d27;
+    --panel-hover: #1c2330;
+    --border: #262f3d;
+    --text: #e7e6e1;
+    --muted: #8993a4;
+    --amber: #e8a33d;
+    --green: #4caf7d;
+    --blue: #5b8dd6;
+    --red: #d9695f;
+    --violet: #9b8ee0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 100% -10%, rgba(91,141,214,0.07), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:40px 24px 80px;}
+
+  /* HEADER */
+  header{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:32px; border-bottom:1px solid var(--border); padding-bottom:24px;}
+  .brand-eyebrow{font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:2px; color:var(--amber); text-transform:uppercase;}
+  h1{font-family:'Space Grotesk', sans-serif; font-size:34px; margin:6px 0 0; font-weight:700; letter-spacing:-0.5px;}
+  .sub{color:var(--muted); font-size:14px; margin-top:6px; max-width:480px;}
+  .header-actions{display:flex; gap:10px; flex-wrap:wrap;}
+
+  button, .btn{
+    font-family:'Inter', sans-serif;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--text);
+    padding:10px 16px;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+    transition: border-color .15s ease, background .15s ease, transform .1s ease;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  button:hover{border-color:#3a4759; background:var(--panel-hover);}
+  button:active{transform:scale(0.98);}
+  .btn-primary{background:var(--amber); color:#1a1305; border-color:var(--amber); font-weight:600;}
+  .btn-primary:hover{background:#f0ad4d; border-color:#f0ad4d;}
+  .btn-ghost{background:transparent;}
+
+  /* CONTROLS */
+  .controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:22px;}
+  .search{
+    flex:1; min-width:220px;
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    padding:10px 14px; color:var(--text); font-size:14px;
+  }
+  .search:focus{outline:none; border-color:var(--amber);}
+  .chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.5px;
+    padding:7px 12px; border-radius:999px; border:1px solid var(--border);
+    background:var(--panel); color:var(--muted); cursor:pointer; user-select:none;
+    text-transform:uppercase;
+  }
+  .chip.active{border-color:var(--amber); color:var(--amber); background:rgba(232,163,61,0.08);}
+
+  /* GRID */
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(270px, 1fr)); gap:16px;}
+
+  .card{
+    position:relative;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 18px 18px 22px;
+    overflow:hidden;
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .card:hover{transform:translateY(-2px); border-color:#3a4759; background:var(--panel-hover);}
+  .card::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:4px;
+    background:var(--cat-color, var(--muted));
+  }
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:1px;
+    color:var(--cat-color, var(--muted)); text-transform:uppercase;
+  }
+  .code{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); opacity:0.6;}
+  .card h3{font-family:'Space Grotesk', sans-serif; font-size:19px; margin:10px 0 6px; font-weight:700;}
+  .card p{font-size:13px; color:var(--muted); line-height:1.5; margin:0 0 16px; min-height:36px;}
+  .card-actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .card-actions .btn{padding:7px 12px; font-size:12px;}
+  .link-open{background:transparent; border-color:var(--border); color:var(--text); text-decoration:none;}
+  .link-open:hover{border-color:var(--cat-color, var(--amber)); color:var(--cat-color, var(--amber));}
+  .icon-btn{padding:7px 9px; background:transparent;}
+  .icon-btn:hover{border-color:var(--red); color:var(--red);}
+
+  .empty{
+    grid-column:1/-1; text-align:center; padding:70px 20px; color:var(--muted);
+    border:1px dashed var(--border); border-radius:12px; font-size:14px;
+  }
+  .empty strong{color:var(--text); display:block; font-family:'Space Grotesk',sans-serif; font-size:18px; margin-bottom:8px;}
+
+  footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color:var(--muted); font-size:12px;}
+  footer a{color:var(--muted);}
+
+  /* MODAL */
+  .overlay{
+    position:fixed; inset:0; background:rgba(8,10,14,0.72); backdrop-filter:blur(2px);
+    display:none; align-items:center; justify-content:center; z-index:50; padding:20px;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    width:100%; max-width:460px; padding:26px; max-height:90vh; overflow:auto;
+  }
+  .modal h2{font-family:'Space Grotesk', sans-serif; margin:0 0 18px; font-size:20px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px; font-family:'JetBrains Mono', monospace; letter-spacing:0.5px; text-transform:uppercase;}
+  .field input, .field textarea, .field select{
+    width:100%; background:#0e1319; border:1px solid var(--border); border-radius:8px;
+    padding:10px 12px; color:var(--text); font-size:14px; font-family:'Inter', sans-serif;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{outline:none; border-color:var(--amber);}
+  .field textarea{resize:vertical; min-height:60px;}
+  .color-row{display:flex; gap:8px; margin-top:6px;}
+  .swatch{width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid transparent;}
+  .swatch.selected{border-color:var(--text);}
+  .modal-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:20px;}
+  .newcat-row{display:flex; gap:8px; margin-top:8px;}
+  .newcat-row input{flex:1;}
+
+  @media (max-width:600px){
+    h1{font-size:26px;}
+    .wrap{padding:24px 16px 60px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand-eyebrow">Accès rapide // Poste méthode</div>
+      <h1>Méthode Logistique — Portfolio</h1>
+      <div class="sub">Tous les outils, applis et tableurs du service, réunis sur un même quai d'accès.</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-ghost" id="exportBtn" title="Sauvegarder la liste dans un fichier">⭳ Exporter</button>
+      <button class="btn-ghost" id="importBtn" title="Charger une liste depuis un fichier">⭱ Importer</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none;">
+      <button class="btn-primary" id="addBtn">+ Ajouter un outil</button>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="text" class="search" id="searchInput" placeholder="Rechercher un outil...">
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <span>Données stockées localement dans ce navigateur. Pense à exporter régulièrement pour ne rien perdre.</span>
+    <span id="countLabel"></span>
+  </footer>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">Ajouter un outil</h2>
+    <form id="cardForm">
+      <div class="field">
+        <label>Nom de l'outil</label>
+        <input type="text" id="fName" required placeholder="Ex: Pilotage M00">
+      </div>
+      <div class="field">
+        <label>Lien (URL)</label>
+        <input type="text" id="fUrl" required placeholder="https://...">
+      </div>
+      <div class="field">
+        <label>Description courte</label>
+        <textarea id="fDesc" placeholder="Ex: Suivi de production, tableau par jour"></textarea>
+      </div>
+      <div class="field">
+        <label>Catégorie</label>
+        <select id="fCat"></select>
+        <div class="newcat-row">
+          <input type="text" id="fNewCat" placeholder="Ou créer une nouvelle catégorie...">
+          <button type="button" class="btn-ghost" id="addCatBtn">Créer</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Couleur repère</label>
+        <div class="color-row" id="colorRow"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="cancelBtn">Annuler</button>
+        <button type="submit" class="btn-primary" id="saveBtn">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'logi_portfolio_cards_v1';
+const COLORS = ['#5b8dd6','#4caf7d','#e8a33d','#d9695f','#9b8ee0','#8993a4'];
+
+const defaultData = [
+  { id: cryptoId(), name:'Pilotage M00', url:'', desc:'Suivi de production, tableau par jour, export CSV.', cat:'Pilotage', color:'#5b8dd6' },
+  { id: cryptoId(), name:'Complet Conforme', url:'', desc:'Contrôle de conformité des kits, gestion des accès par module.', cat:'Qualité', color:'#4caf7d' },
+  { id: cryptoId(), name:'Éditeur de logigramme', url:'', desc:'Création de logigrammes avec routage libre des connexions.', cat:'Outils perso', color:'#9b8ee0' },
+  { id: cryptoId(), name:'Analyse Excel F-Activités', url:'', desc:'Analyse des fichiers F-Activités Équipes et A-Delta Pièces Kits.', cat:'Excel / RFX', color:'#e8a33d' },
+];
+
+function cryptoId(){ return 'c'+Math.random().toString(36).slice(2,10); }
+
+let state = {
+  cards: [],
+  categories: ['Pilotage','Qualité','Excel / RFX','Outils perso'],
+  activeCat: 'Tous',
+  search: ''
+};
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      state.cards = parsed.cards || [];
+      state.categories = parsed.categories || state.categories;
+    } else {
+      state.cards = defaultData;
+      save();
+    }
+  } catch(e){
+    console.error('Erreur de chargement localStorage', e);
+    state.cards = defaultData;
+  }
+}
+
+function save(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ cards: state.cards, categories: state.categories }));
+  } catch(e){
+    console.error('Erreur de sauvegarde localStorage', e);
+  }
+}
+
+function renderChips(){
+  const chipsEl = document.getElementById('chips');
+  const cats = ['Tous', ...state.categories];
+  chipsEl.innerHTML = cats.map(c =>
+    `<div class="chip ${state.activeCat===c ? 'active':''}" data-cat="${escapeAttr(c)}">${escapeHtml(c)}</div>`
+  ).join('');
+  chipsEl.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      state.activeCat = chip.dataset.cat;
+      renderChips();
+      renderGrid();
+    });
+  });
+}
+
+function renderGrid(){
+  const grid = document.getElementById('grid');
+  let cards = state.cards.filter(c=>{
+    const matchCat = state.activeCat==='Tous' || c.cat===state.activeCat;
+    const matchSearch = !state.search || (c.name+' '+c.desc).toLowerCase().includes(state.search.toLowerCase());
+    return matchCat && matchSearch;
+  });
+
+  document.getElementById('countLabel').textContent = state.cards.length + ' outil(s) référencé(s)';
+
+  if(cards.length===0){
+    grid.innerHTML = `<div class="empty"><strong>Rien à afficher ici</strong>Ajoute un outil ou change de filtre pour voir tes cartes.</div>`;
+    return;
+  }
+
+  grid.innerHTML = cards.map((c, idx)=>{
+    const num = String(state.cards.indexOf(c)+1).padStart(2,'0');
+    const urlSafe = c.url && c.url.trim() ? c.url.trim() : null;
+    return `
+    <div class="card" style="--cat-color:${c.color}">
+      <div class="card-top">
+        <span class="eyebrow">${escapeHtml(c.cat||'—')}</span>
+        <span class="code">#${num}</span>
+      </div>
+      <h3>${escapeHtml(c.name)}</h3>
+      <p>${escapeHtml(c.desc||'')}</p>
+      <div class="card-actions">
+        ${urlSafe
+          ? `<a class="btn link-open" href="${escapeAttr(urlSafe)}" target="_blank" rel="noopener">Ouvrir →</a>`
+          : `<span class="btn link-open" style="opacity:0.5; cursor:default;">Pas de lien</span>`}
+        <button class="btn icon-btn" title="Modifier" data-edit="${c.id}">✎</button>
+        <button class="btn icon-btn" title="Supprimer" data-del="${c.id}">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('[data-edit]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openModal(btn.dataset.edit));
+  });
+  grid.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(confirm('Supprimer cet outil de la liste ?')){
+        state.cards = state.cards.filter(c=>c.id!==btn.dataset.del);
+        save();
+        renderGrid();
+      }
+    });
+  });
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+function escapeAttr(str){ return escapeHtml(str); }
+
+/* MODAL */
+let editingId = null;
+
+function populateCategorySelect(){
+  const sel = document.getElementById('fCat');
+  sel.innerHTML = state.categories.map(c=>`<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+}
+
+function populateColorRow(selected){
+  const row = document.getElementById('colorRow');
+  row.innerHTML = COLORS.map(col=>
+    `<div class="swatch ${col===selected?'selected':''}" style="background:${col}" data-color="${col}"></div>`
+  ).join('');
+  row.querySelectorAll('.swatch').forEach(sw=>{
+    sw.addEventListener('click', ()=>{
+      row.querySelectorAll('.swatch').forEach(s=>s.classList.remove('selected'));
+      sw.classList.add('selected');
+    });
+  });
+}
+
+function getSelectedColor(){
+  const sel = document.querySelector('#colorRow .swatch.selected');
+  return sel ? sel.dataset.color : COLORS[0];
+}
+
+function openModal(id){
+  editingId = id || null;
+  populateCategorySelect();
+  const card = id ? state.cards.find(c=>c.id===id) : null;
+
+  document.getElementById('modalTitle').textContent = card ? 'Modifier l\'outil' : 'Ajouter un outil';
+  document.getElementById('fName').value = card ? card.name : '';
+  document.getElementById('fUrl').value = card ? card.url : '';
+  document.getElementById('fDesc').value = card ? card.desc : '';
+  document.getElementById('fNewCat').value = '';
+  if(card && !state.categories.includes(card.cat)){
+    state.categories.push(card.cat);
+    populateCategorySelect();
+  }
+  document.getElementById('fCat').value = card ? card.cat : state.categories[0];
+  populateColorRow(card ? card.color : COLORS[0]);
+
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('fName').focus();
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('show');
+  editingId = null;
+}
+
+document.getElementById('addBtn').addEventListener('click', ()=> openModal(null));
+document.getElementById('cancelBtn').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', (e)=>{
+  if(e.target.id==='overlay') closeModal();
+});
+
+document.getElementById('addCatBtn').addEventListener('click', ()=>{
+  const val = document.getElementById('fNewCat').value.trim();
+  if(!val) return;
+  if(!state.categories.includes(val)) state.categories.push(val);
+  populateCategorySelect();
+  document.getElementById('fCat').value = val;
+  document.getElementById('fNewCat').value = '';
+});
+
+document.getElementById('cardForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const name = document.getElementById('fName').value.trim();
+  const url = document.getElementById('fUrl').value.trim();
+  const desc = document.getElementById('fDesc').value.trim();
+  const cat = document.getElementById('fCat').value;
+  const color = getSelectedColor();
+  if(!name || !url) return;
+
+  if(editingId){
+    const card = state.cards.find(c=>c.id===editingId);
+    Object.assign(card, { name, url, desc, cat, color });
+  } else {
+    state.cards.push({ id: cryptoId(), name, url, desc, cat, color });
+  }
+  save();
+  renderChips();
+  renderGrid();
+  closeModal();
+});
+
+document.getElementById('searchInput').addEventListener('input', (e)=>{
+  state.search = e.target.value;
+  renderGrid();
+});
+
+/* EXPORT / IMPORT */
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify({cards:state.cards, categories:state.categories}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'portfolio-methode-logistique-data.json';
+  a.click();
+});
+
+document.getElementById('importBtn').addEventListener('click', ()=>{
+  document.getElementById('importFile').click();
+});
+document.getElementById('importFile').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () =>{
+    try{
+      const parsed = JSON.parse(reader.result);
+      if(parsed.cards){
+        state.cards = parsed.cards;
+        state.categories = parsed.categories || state.categories;
+        save();
+        renderChips();
+        renderGrid();
+      }
+    } catch(err){
+      alert('Fichier invalide.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+/* INIT */
+load();
+renderChips();
+renderGrid();
+</script>
+
+</body>
+</html>
