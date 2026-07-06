@@ -1,14 +1,6 @@
 {
   "cards": [
     {
-      "id": "cladsfbh2",
-      "name": "Pilotage M00",
-      "url": "",
-      "desc": "Suivi de production, tableau par jour, export CSV.",
-      "cat": "Pilotage",
-      "color": "#5b8dd6"
-    },
-    {
       "id": "cjlbumrvc",
       "name": "Complet Conforme",
       "url": "https://methodelogistiquesncf-boop.github.io/completconforme/",
