@@ -1,42 +1,34 @@
-{
-  "cards": [
-    {
-      "id": "cjlbumrvc",
-      "name": "Complet Conforme",
-      "url": "https://methodelogistiquesncf-boop.github.io/completconforme/",
-      "desc": "Contrôle de conformité des kits, gestion des accès par module.",
-      "cat": "Qualité",
-      "color": "#4caf7d"
-    },
-    {
-      "id": "c1351ehqa",
-      "name": "Éditeur de logigramme",
-      "url": "https://methodelogistiquesncf-boop.github.io/Cr-ation_logigramme/",
-      "desc": "Création de logigrammes avec routage libre des connexions.",
-      "cat": "Outils perso",
-      "color": "#9b8ee0"
-    },
-    {
-      "id": "cfmyjgloo",
-      "name": "Correcteur",
-      "url": "https://methodelogistiquesncf-boop.github.io/Correcteurs/",
-      "desc": "",
-      "cat": "Outils perso",
-      "color": "#5b8dd6"
-    },
-    {
-      "id": "ccllojnqq",
-      "name": "PilotageM00",
-      "url": "https://methodelogistiquesncf-boop.github.io/PilotageM00/suivi.html",
-      "desc": "",
-      "cat": "Pilotage",
-      "color": "#5b8dd6"
-    }
-  ],
-  "categories": [
-    "Pilotage",
-    "Qualité",
-    "Excel / RFX",
-    "Outils perso"
-  ]
-}
+[
+  {
+    "id": "cjlbumrvc",
+    "name": "Complet Conforme",
+    "url": "https://methodelogistiquesncf-boop.github.io/completconforme/",
+    "desc": "Contrôle de conformité des kits, gestion des accès par module.",
+    "cat": "Qualité",
+    "color": "#4caf7d"
+  },
+  {
+    "id": "c1351ehqa",
+    "name": "Éditeur de logigramme",
+    "url": "https://methodelogistiquesncf-boop.github.io/Cr-ation_logigramme/",
+    "desc": "Création de logigrammes avec routage libre des connexions.",
+    "cat": "Outils perso",
+    "color": "#9b8ee0"
+  },
+  {
+    "id": "cfmyjgloo",
+    "name": "Correcteur",
+    "url": "https://methodelogistiquesncf-boop.github.io/Correcteurs/",
+    "desc": "Vérifiez et corrigez instantanément l'orthographe et la grammaire de vos textes professionnels.",
+    "cat": "Outils perso",
+    "color": "#5b8dd6"
+  },
+  {
+    "id": "ccllojnqq",
+    "name": "PilotageM00",
+    "url": "https://methodelogistiquesncf-boop.github.io/PilotageM00/suivi.html",
+    "desc": "",
+    "cat": "Pilotage",
+    "color": "#5b8dd6"
+  }
+]
