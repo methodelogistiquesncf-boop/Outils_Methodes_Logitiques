@@ -36,5 +36,11 @@
     "name": "Gestion contenants",
     "url": "https://methodelogistiquesncf-boop.github.io/Gestion_des_contenants/",
     "desc": "Suivez, inventoriez et localisez l'ensemble de vos contenants (bois, métalliques, etc.)."
+  },
+  {
+    "id": "cx4iri0n9",
+    "name": "Demandes Popups",
+    "url": "https://methodelogistiquesncf-boop.github.io/demande_popup/",
+    "desc": "Centralisez, modifiez et suivez l'état d'avancement de toutes vos demandes de popups dans Reflex"
   }
 ]
