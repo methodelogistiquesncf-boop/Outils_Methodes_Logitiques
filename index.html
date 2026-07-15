@@ -112,6 +112,7 @@
   .empty strong{color:var(--text); display:block; font-family:'Space Grotesk',sans-serif; font-size:17px; margin-bottom:8px;}
 
   footer{margin-top:32px; padding-top:16px; border-top:1px solid var(--border); color:var(--muted); font-size:12px; text-align:right;}
+  footer.error{color:var(--red-ink);}
 
   .overlay{
     position:fixed; inset:0; background:rgba(60,50,30,0.25); backdrop-filter:blur(3px);
@@ -158,7 +159,7 @@
 
   <div class="grid" id="grid"></div>
 
-  <footer>Données stockées localement dans ce navigateur.</footer>
+  <footer id="footerNote">Données synchronisées avec GitHub.</footer>
 </div>
 
 <div class="overlay" id="overlay">
@@ -186,11 +187,22 @@
 </div>
 
 <script>
-const STORAGE_KEY = 'logi_portfolio_simple_v1';
+/* ================================================================
+   CONFIGURATION GITHUB — à remplir une seule fois par toi.
+   Remplace les valeurs ci-dessous puis mets à jour le fichier sur GitHub.
+   ================================================================ */
+const GH_OWNER  = 'methodelogistiquesncf-boop';
+const GH_REPO   = 'methodelogistiquesncf-boop.github.io'; // vérifie le vrai nom du dépôt
+const GH_BRANCH = 'main';
+const GH_PATH   = 'data.json';
+/* ================================================================ */
+
+const TOKEN_KEY = 'logi_portfolio_gh_token_v1';
+const LOCAL_CACHE_KEY = 'logi_portfolio_cache_v1';
 
 function makeId(){ return 'c'+Math.random().toString(36).slice(2,10); }
 
-const defaultData = [
+const fallbackData = [
   { id: makeId(), name:'Pilotage M00', url:'', desc:'Suivi de production, tableau par jour.' },
   { id: makeId(), name:'Complet Conforme', url:'', desc:'Contrôle de conformité des kits.' },
   { id: makeId(), name:'Analyse Excel F-Activités', url:'', desc:'Analyse des fichiers F-Activités et A-Delta.' },
@@ -199,30 +211,123 @@ const defaultData = [
 let cards = [];
 let search = '';
 let editingId = null;
+let currentSha = null;
+let ghToken = null;
+let isSaving = false;
+let pendingSave = false;
 
-function load(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    cards = raw ? JSON.parse(raw) : defaultData;
-    if(!raw) save();
-  } catch(e){
-    console.error('Erreur de chargement', e);
-    cards = defaultData;
-  }
+function b64EncodeUnicode(str){
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m,p1)=>String.fromCharCode('0x'+p1)));
 }
-function save(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(cards)); }
-  catch(e){ console.error('Erreur de sauvegarde', e); }
+function b64DecodeUnicode(str){
+  return decodeURIComponent(atob(str).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
 }
-
 function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+function setFooter(text, isError){
+  const el = document.getElementById('footerNote');
+  el.textContent = text;
+  el.className = isError ? 'error' : '';
+}
+
+function getToken(){
+  if(ghToken) return ghToken;
+  let stored = null;
+  try{ stored = localStorage.getItem(TOKEN_KEY); }catch(e){}
+  if(stored){ ghToken = stored; return ghToken; }
+  const entered = prompt(
+    "Connexion GitHub (une seule fois) :\nColle ton token d'accès personnel (Contents: Read & write sur ce dépôt)."
+  );
+  if(entered && entered.trim()){
+    ghToken = entered.trim();
+    try{ localStorage.setItem(TOKEN_KEY, ghToken); }catch(e){}
+  }
+  return ghToken;
+}
+
+async function githubGetFile(){
+  const token = getToken();
+  if(!token) throw new Error('Token manquant');
+  const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(GH_PATH)}?ref=${encodeURIComponent(GH_BRANCH)}`, {
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
+  });
+  if(!res.ok){
+    if(res.status === 401){ try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} ghToken = null; }
+    const body = await res.text().catch(()=> '');
+    throw new Error(`GET ${res.status}${body ? ' — '+body.slice(0,150) : ''}`);
+  }
+  const data = await res.json();
+  const json = JSON.parse(b64DecodeUnicode(data.content));
+  return { json, sha: data.sha };
+}
+
+async function githubPutFile(obj, sha, message){
+  const token = getToken();
+  if(!token) throw new Error('Token manquant');
+  const body = {
+    message: message || 'Mise à jour du portfolio',
+    content: b64EncodeUnicode(JSON.stringify(obj, null, 2)),
+    branch: GH_BRANCH
+  };
+  if(sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(GH_PATH)}`, {
+    method:'PUT',
+    headers: { 'Authorization': `token ${token}`, 'Accept':'application/vnd.github+json', 'Content-Type':'application/json' },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok){
+    if(res.status === 401){ try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} ghToken = null; }
+    const errBody = await res.json().catch(()=>({}));
+    throw new Error(errBody.message || `PUT ${res.status}`);
+  }
+  return await res.json();
+}
+
+async function loadFromGithub(){
+  try{
+    const {json, sha} = await githubGetFile();
+    cards = Array.isArray(json) ? json : (json.cards || []);
+    currentSha = sha;
+    cacheLocally();
+    setFooter('Données synchronisées avec GitHub.');
+  }catch(e){
+    console.error(e);
+    const raw = localStorage.getItem(LOCAL_CACHE_KEY);
+    cards = raw ? JSON.parse(raw) : fallbackData;
+    setFooter("Impossible de charger data.json depuis GitHub — affichage local.", true);
+  }
+  render();
+}
+
+function cacheLocally(){
+  try{ localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(cards)); }catch(e){}
+}
+
+async function persist(message){
+  cacheLocally();
+  if(isSaving){ pendingSave = true; return; }
+  isSaving = true;
+  setFooter('Enregistrement…');
+  try{
+    const {sha} = await githubGetFile().catch(()=>({sha: currentSha}));
+    const result = await githubPutFile(cards, sha || currentSha, message);
+    currentSha = result.content.sha;
+    setFooter('Données synchronisées avec GitHub.');
+  }catch(e){
+    console.error(e);
+    setFooter("Échec de l'enregistrement sur GitHub : "+e.message, true);
+  }finally{
+    isSaving = false;
+    if(pendingSave){ pendingSave = false; persist('Mise à jour du portfolio'); }
+  }
 }
 
 function render(){
   const grid = document.getElementById('grid');
   const filtered = cards.filter(c =>
-    !search || (c.name+' '+c.desc).toLowerCase().includes(search.toLowerCase())
+    !search || (c.name+' '+(c.desc||'')).toLowerCase().includes(search.toLowerCase())
   );
 
   if(filtered.length===0){
@@ -257,8 +362,8 @@ function render(){
       const card = cards.find(c=>c.id===btn.dataset.del);
       if(confirm(`Supprimer "${card ? card.name : ''}" ?`)){
         cards = cards.filter(c=>c.id!==btn.dataset.del);
-        save();
         render();
+        persist(`Suppression : ${card ? card.name : ''}`);
       }
     });
   });
@@ -292,15 +397,18 @@ document.getElementById('cardForm').addEventListener('submit', (e)=>{
   const desc = document.getElementById('fDesc').value.trim();
   if(!name || !url) return;
 
+  let message;
   if(editingId){
     const card = cards.find(c=>c.id===editingId);
     Object.assign(card, { name, url, desc });
+    message = `Modification : ${name}`;
   } else {
     cards.push({ id: makeId(), name, url, desc });
+    message = `Ajout : ${name}`;
   }
-  save();
   render();
   closeModal();
+  persist(message);
 });
 
 document.getElementById('searchInput').addEventListener('input', (e)=>{
@@ -308,8 +416,7 @@ document.getElementById('searchInput').addEventListener('input', (e)=>{
   render();
 });
 
-load();
-render();
+loadFromGithub();
 </script>
 
 </body>
