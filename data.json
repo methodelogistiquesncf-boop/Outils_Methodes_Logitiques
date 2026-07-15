@@ -60,5 +60,11 @@
     "name": "Générateur codes-barres & QR",
     "url": "https://mikefri.github.io/GenCodeBarre/",
     "desc": "Générez instantanément vos codes-barres et QR codes pour vos besoins."
+  },
+  {
+    "id": "c2fzlxs7n",
+    "name": "Planning Congés",
+    "url": "https://mikefri.github.io/mes_conges/",
+    "desc": "Gérez et visualisez en un coup d'œil le planning des congés individuels et collectifs."
   }
 ]
