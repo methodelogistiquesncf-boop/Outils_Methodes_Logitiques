@@ -54,5 +54,11 @@
     "name": "Ticket_GLPI MCO",
     "url": "https://mikefri.github.io/Ticket_GLPI/login.html",
     "desc": "Déclarez, suivez et traitez l'ensemble des demandes d'assistance auprès de l'équipe MCO."
+  },
+  {
+    "id": "cdjnyyxd5",
+    "name": "Générateur codes-barres & QR",
+    "url": "https://mikefri.github.io/GenCodeBarre/",
+    "desc": "Générez instantanément vos codes-barres et QR codes pour vos besoins."
   }
 ]
