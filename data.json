@@ -42,5 +42,17 @@
     "name": "Demandes Popups",
     "url": "https://methodelogistiquesncf-boop.github.io/demande_popup/",
     "desc": "Centralisez, modifiez et suivez l'état d'avancement de toutes vos demandes de popups dans Reflex"
+  },
+  {
+    "id": "cabve2poj",
+    "name": "Pilotage Projet",
+    "url": "https://mikefri.github.io/Pilotage_Projet/",
+    "desc": "Planifiez, pilotez et coordonnez l'ensemble des projets collaboratifs au sein de l'équipe."
+  },
+  {
+    "id": "c5xte4ap1",
+    "name": "Ticket_GLPI MCO",
+    "url": "https://mikefri.github.io/Ticket_GLPI/login.html",
+    "desc": "Déclarez, suivez et traitez l'ensemble des demandes d'assistance auprès de l'équipe MCO."
   }
 ]
