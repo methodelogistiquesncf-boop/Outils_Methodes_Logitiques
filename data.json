@@ -30,5 +30,11 @@
     "desc": "Suivez l'état d'avancement de vos kits et pilotez les manquants d'approvisionnement.",
     "cat": "Pilotage",
     "color": "#5b8dd6"
+  },
+  {
+    "id": "cnnp5yjim",
+    "name": "Gestion contenants",
+    "url": "https://methodelogistiquesncf-boop.github.io/Gestion_des_contenants/",
+    "desc": "Suivez, inventoriez et localisez l'ensemble de vos contenants (bois, métalliques, etc.)."
   }
 ]
