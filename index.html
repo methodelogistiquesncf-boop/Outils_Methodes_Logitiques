@@ -6,7 +6,7 @@
 <title>Portfolio // Méthode Logistique</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg: #f6f4ee;
@@ -17,15 +17,8 @@
     --muted: #948d7d;
     --amber: #eeb96a;
     --amber-ink: #6b4a17;
-    --green: #93c6a6;
-    --green-ink: #2f5a3e;
-    --blue: #8fb3d8;
-    --blue-ink: #2c4f70;
     --red: #e2948d;
     --red-ink: #7a3129;
-    --violet: #b6a5d8;
-    --violet-ink: #4a3a70;
-    --sand: #b8ab8e;
     --shadow-sm: 0 1px 3px rgba(80,64,30,0.06);
     --shadow-md: 0 10px 30px rgba(80,64,30,0.10);
   }
@@ -33,25 +26,17 @@
   body{
     margin:0;
     background:
-      radial-gradient(1000px 500px at 100% -10%, rgba(143,179,216,0.16), transparent 60%),
-      radial-gradient(900px 500px at -5% 10%, rgba(238,185,106,0.12), transparent 55%),
+      radial-gradient(1000px 500px at 100% -10%, rgba(238,185,106,0.10), transparent 60%),
       var(--bg);
     color:var(--text);
     font-family:'Inter', sans-serif;
     min-height:100vh;
   }
-  .wrap{max-width:1180px; margin:0 auto; padding:40px 24px 80px;}
+  .wrap{max-width:1000px; margin:0 auto; padding:40px 24px 80px;}
 
-  header{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:32px; border-bottom:1px solid var(--border); padding-bottom:24px;}
-  .brand-eyebrow{font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:2px; color:var(--amber-ink); text-transform:uppercase; display:flex; align-items:center; gap:10px;}
-  .sync-dot{width:8px; height:8px; border-radius:50%; background:var(--sand); display:inline-block;}
-  .sync-dot.ok{background:var(--green);}
-  .sync-dot.err{background:var(--red);}
-  .sync-dot.busy{background:var(--amber); animation:pulse 1s infinite;}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-  h1{font-family:'Space Grotesk', sans-serif; font-size:34px; margin:6px 0 0; font-weight:700; letter-spacing:-0.5px; color:#2a2924;}
-  .sub{color:var(--muted); font-size:14px; margin-top:6px; max-width:480px;}
-  .header-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  header{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:28px; border-bottom:1px solid var(--border); padding-bottom:20px;}
+  h1{font-family:'Space Grotesk', sans-serif; font-size:30px; margin:0; font-weight:700; letter-spacing:-0.5px; color:#2a2924;}
+  .sub{color:var(--muted); font-size:13px; margin-top:6px;}
 
   button, .btn{
     font-family:'Inter', sans-serif;
@@ -73,70 +58,43 @@
   .btn-ghost{background:transparent; box-shadow:none;}
   .btn-ghost:hover{box-shadow:var(--shadow-sm);}
 
-  .controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:22px;}
   .search{
-    flex:1; min-width:220px;
+    width:100%;
     background:var(--panel); border:1px solid var(--border); border-radius:10px;
-    padding:10px 14px; color:var(--text); font-size:14px; box-shadow:var(--shadow-sm);
+    padding:11px 14px; color:var(--text); font-size:14px; box-shadow:var(--shadow-sm);
+    margin-bottom:20px;
   }
   .search::placeholder{color:var(--muted);}
   .search:focus{outline:none; border-color:var(--amber);}
-  .chips{display:flex; gap:8px; flex-wrap:wrap;}
-  .chip{
-    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.5px;
-    padding:7px 14px; border-radius:999px; border:1px solid var(--border);
-    background:var(--panel); color:var(--muted); cursor:pointer; user-select:none;
-    text-transform:uppercase; transition: all .15s ease;
-  }
-  .chip:hover{border-color:#d9cfb8;}
-  .chip.active{border-color:var(--amber); color:var(--amber-ink); background:#fbecd3;}
 
-  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(270px, 1fr)); gap:16px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px;}
 
   .card{
     position:relative;
     background:var(--panel);
     border:1px solid var(--border);
     border-radius:16px;
-    padding:20px 18px 18px 22px;
-    overflow:hidden;
+    padding:20px 18px;
     box-shadow:var(--shadow-sm);
     transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
   }
   .card:hover{transform:translateY(-3px); border-color:#dcd3bf; box-shadow:var(--shadow-md);}
-  .card::before{
-    content:"";
-    position:absolute; left:0; top:0; bottom:0; width:5px;
-    border-radius:0 3px 3px 0;
-    background:var(--cat-color, var(--sand));
-  }
-  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
-  .eyebrow{
-    font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.8px;
-    color:var(--cat-ink, var(--muted));
-    background: color-mix(in srgb, var(--cat-color, var(--sand)) 22%, white);
-    padding:3px 9px; border-radius:999px;
-    text-transform:uppercase;
-  }
-  .code{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); opacity:0.7;}
-  .card h3{font-family:'Space Grotesk', sans-serif; font-size:19px; margin:12px 0 6px; font-weight:700; color:#2a2924;}
+  .card h3{font-family:'Space Grotesk', sans-serif; font-size:18px; margin:0 0 6px; font-weight:700; color:#2a2924;}
   .card p{font-size:13px; color:var(--muted); line-height:1.5; margin:0 0 16px; min-height:36px;}
   .card-actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
   .card-actions .btn{padding:7px 12px; font-size:12px;}
   .link-open{background:transparent; border-color:var(--border); color:var(--text); text-decoration:none; box-shadow:none;}
-  .link-open:hover{border-color:var(--cat-color, var(--amber)); color:var(--cat-ink, var(--amber-ink)); box-shadow:var(--shadow-sm);}
-  .icon-btn{padding:7px 9px; background:transparent; box-shadow:none;}
+  .link-open:hover{border-color:var(--amber); color:var(--amber-ink); box-shadow:var(--shadow-sm);}
+  .icon-btn{padding:7px 9px; background:transparent; box-shadow:none; margin-left:auto;}
   .icon-btn:hover{border-color:var(--red); color:var(--red-ink); box-shadow:var(--shadow-sm);}
 
   .empty{
-    grid-column:1/-1; text-align:center; padding:70px 20px; color:var(--muted);
+    grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--muted);
     border:1px dashed var(--border); border-radius:16px; font-size:14px; background:var(--panel);
   }
-  .empty strong{color:var(--text); display:block; font-family:'Space Grotesk',sans-serif; font-size:18px; margin-bottom:8px;}
+  .empty strong{color:var(--text); display:block; font-family:'Space Grotesk',sans-serif; font-size:17px; margin-bottom:8px;}
 
-  footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color:var(--muted); font-size:12px;}
-  footer a{color:var(--muted);}
-  #statusMsg{font-family:'JetBrains Mono', monospace;}
+  footer{margin-top:32px; padding-top:16px; border-top:1px solid var(--border); color:var(--muted); font-size:12px; text-align:right;}
 
   .overlay{
     position:fixed; inset:0; background:rgba(60,50,30,0.25); backdrop-filter:blur(3px);
@@ -145,33 +103,24 @@
   .overlay.show{display:flex;}
   .modal{
     background:var(--panel); border:1px solid var(--border); border-radius:18px;
-    width:100%; max-width:460px; padding:26px; max-height:90vh; overflow:auto;
+    width:100%; max-width:420px; padding:26px;
     box-shadow: 0 24px 60px rgba(60,50,20,0.18);
   }
-  .modal h2{font-family:'Space Grotesk', sans-serif; margin:0 0 18px; font-size:20px; color:#2a2924;}
-  .modal .hint{font-size:12px; color:var(--muted); margin:-10px 0 16px; line-height:1.5;}
+  .modal h2{font-family:'Space Grotesk', sans-serif; margin:0 0 18px; font-size:19px; color:#2a2924;}
   .field{margin-bottom:14px;}
-  .field label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px; font-family:'JetBrains Mono', monospace; letter-spacing:0.5px; text-transform:uppercase;}
-  .field input, .field textarea, .field select{
+  .field label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px;}
+  .field input, .field textarea{
     width:100%; background:#fbf9f4; border:1px solid var(--border); border-radius:10px;
     padding:10px 12px; color:var(--text); font-size:14px; font-family:'Inter', sans-serif;
   }
-  .field input:focus, .field textarea:focus, .field select:focus{outline:none; border-color:var(--amber);}
+  .field input:focus, .field textarea:focus{outline:none; border-color:var(--amber);}
   .field textarea{resize:vertical; min-height:60px;}
-  .color-row{display:flex; gap:8px; margin-top:6px;}
-  .swatch{width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid transparent; box-shadow:var(--shadow-sm);}
-  .swatch.selected{border-color:#2a2924;}
   .modal-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:20px;}
-  .newcat-row{display:flex; gap:8px; margin-top:8px;}
-  .newcat-row input{flex:1;}
-  .settings-note{background:#fbf9f4; border:1px solid var(--border); border-radius:10px; padding:12px; font-size:12px; color:var(--muted); line-height:1.6; margin-bottom:16px;}
-  .settings-note strong{color:var(--amber-ink);}
 
   @media (max-width:600px){
-    h1{font-size:26px;}
+    h1{font-size:24px;}
     .wrap{padding:24px 16px 60px;}
   }
-
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important;}
   }
@@ -182,30 +131,17 @@
 <div class="wrap">
   <header>
     <div>
-      <div class="brand-eyebrow"><span class="sync-dot" id="syncDot"></span> <span id="syncLabel">Accès rapide // Poste méthode</span></div>
       <h1>Méthode Logistique — Portfolio</h1>
-      <div class="sub">Tous les outils, applis et tableurs du service, réunis sur un même quai d'accès.</div>
+      <div class="sub">Tous les outils du service, réunis au même endroit.</div>
     </div>
-    <div class="header-actions">
-      <button class="btn-ghost" id="settingsBtn" title="Configurer la synchronisation GitHub">⚙ GitHub</button>
-      <button class="btn-ghost" id="exportBtn" title="Sauvegarder la liste dans un fichier">⭳ Exporter</button>
-      <button class="btn-ghost" id="importBtn" title="Charger une liste depuis un fichier">⭱ Importer</button>
-      <input type="file" id="importFile" accept="application/json" style="display:none;">
-      <button class="btn-primary" id="addBtn">+ Ajouter un outil</button>
-    </div>
+    <button class="btn-primary" id="addBtn">+ Ajouter un outil</button>
   </header>
 
-  <div class="controls">
-    <input type="text" class="search" id="searchInput" placeholder="Rechercher un outil...">
-    <div class="chips" id="chips"></div>
-  </div>
+  <input type="text" class="search" id="searchInput" placeholder="Rechercher un outil...">
 
   <div class="grid" id="grid"></div>
 
-  <footer>
-    <span id="statusMsg">Données stockées localement dans ce navigateur.</span>
-    <span id="countLabel"></span>
-  </footer>
+  <footer>Données stockées localement dans ce navigateur.</footer>
 </div>
 
 <div class="overlay" id="overlay">
@@ -224,18 +160,6 @@
         <label>Description courte</label>
         <textarea id="fDesc" placeholder="Ex: Suivi de production, tableau par jour"></textarea>
       </div>
-      <div class="field">
-        <label>Catégorie</label>
-        <select id="fCat"></select>
-        <div class="newcat-row">
-          <input type="text" id="fNewCat" placeholder="Ou créer une nouvelle catégorie...">
-          <button type="button" class="btn-ghost" id="addCatBtn">Créer</button>
-        </div>
-      </div>
-      <div class="field">
-        <label>Couleur repère</label>
-        <div class="color-row" id="colorRow"></div>
-      </div>
       <div class="modal-actions">
         <button type="button" class="btn-ghost" id="cancelBtn">Annuler</button>
         <button type="submit" class="btn-primary" id="saveBtn">Enregistrer</button>
@@ -244,255 +168,60 @@
   </div>
 </div>
 
-<div class="overlay" id="settingsOverlay">
-  <div class="modal">
-    <h2>Synchronisation GitHub</h2>
-    <div class="settings-note">
-      La liste sera lue et écrite dans un fichier JSON de ton dépôt GitHub, via l'API GitHub.
-      Le token reste uniquement dans <strong>ce navigateur</strong> (localStorage) — il n'est jamais écrit dans le HTML.
-      Sans configuration, la page continue de fonctionner en mode local uniquement.
-    </div>
-    <form id="settingsForm">
-      <div class="field">
-        <label>Propriétaire (owner)</label>
-        <input type="text" id="gOwner" placeholder="ex: mike-dev">
-      </div>
-      <div class="field">
-        <label>Nom du dépôt</label>
-        <input type="text" id="gRepo" placeholder="ex: portfolio-methode">
-      </div>
-      <div class="field">
-        <label>Branche</label>
-        <input type="text" id="gBranch" placeholder="main" value="main">
-      </div>
-      <div class="field">
-        <label>Chemin du fichier JSON</label>
-        <input type="text" id="gPath" placeholder="data.json" value="data.json">
-      </div>
-      <div class="field">
-        <label>Token (fine-grained, permission Contents: Read and write)</label>
-        <input type="password" id="gToken" placeholder="github_pat_...">
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn-ghost" id="settingsClearBtn">Désactiver la sync</button>
-        <button type="button" class="btn-ghost" id="settingsCancelBtn">Annuler</button>
-        <button type="submit" class="btn-primary" id="settingsSaveBtn">Connecter</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 <script>
-const STORAGE_KEY = 'logi_portfolio_cards_v1';
-const CONFIG_KEY = 'logi_portfolio_github_config_v1';
-// Palette pastel : { couleur repère, couleur de texte associée pour les badges }
-const COLORS = [
-  { color:'#8fb3d8', ink:'#2c4f70' },
-  { color:'#93c6a6', ink:'#2f5a3e' },
-  { color:'#eeb96a', ink:'#6b4a17' },
-  { color:'#e2948d', ink:'#7a3129' },
-  { color:'#b6a5d8', ink:'#4a3a70' },
-  { color:'#b8ab8e', ink:'#5a5140' }
-];
-function inkFor(color){
-  const found = COLORS.find(c=>c.color===color);
-  return found ? found.ink : '#5a5140';
-}
+const STORAGE_KEY = 'logi_portfolio_simple_v1';
 
-function cryptoId(){ return 'c'+Math.random().toString(36).slice(2,10); }
+function makeId(){ return 'c'+Math.random().toString(36).slice(2,10); }
 
 const defaultData = [
-  { id: cryptoId(), name:'Pilotage M00', url:'', desc:'Suivi de production, tableau par jour, export CSV.', cat:'Pilotage', color:'#8fb3d8' },
-  { id: cryptoId(), name:'Complet Conforme', url:'', desc:'Contrôle de conformité des kits, gestion des accès par module.', cat:'Qualité', color:'#93c6a6' },
-  { id: cryptoId(), name:'Éditeur de logigramme', url:'', desc:'Création de logigrammes avec routage libre des connexions.', cat:'Outils perso', color:'#b6a5d8' },
-  { id: cryptoId(), name:'Analyse Excel F-Activités', url:'', desc:'Analyse des fichiers F-Activités Équipes et A-Delta Pièces Kits.', cat:'Excel / RFX', color:'#eeb96a' },
+  { id: makeId(), name:'Pilotage M00', url:'', desc:'Suivi de production, tableau par jour.' },
+  { id: makeId(), name:'Complet Conforme', url:'', desc:'Contrôle de conformité des kits.' },
+  { id: makeId(), name:'Analyse Excel F-Activités', url:'', desc:'Analyse des fichiers F-Activités et A-Delta.' },
 ];
 
-let state = {
-  cards: [],
-  categories: ['Pilotage','Qualité','Excel / RFX','Outils perso'],
-  activeCat: 'Tous',
-  search: ''
-};
+let cards = [];
+let search = '';
+let editingId = null;
 
-let githubConfig = null; // {owner, repo, branch, path, token}
-let currentSha = null;   // sha of the json file on GitHub, needed to update it
-
-/* ---------- LOCAL STORAGE (fallback + cache) ---------- */
-function loadLocal(){
+function load(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw){
-      const parsed = JSON.parse(raw);
-      state.cards = parsed.cards || [];
-      state.categories = parsed.categories || state.categories;
-    } else {
-      state.cards = defaultData;
-      saveLocal();
-    }
+    cards = raw ? JSON.parse(raw) : defaultData;
+    if(!raw) save();
   } catch(e){
-    console.error('Erreur de chargement localStorage', e);
-    state.cards = defaultData;
+    console.error('Erreur de chargement', e);
+    cards = defaultData;
   }
 }
-function saveLocal(){
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ cards: state.cards, categories: state.categories }));
-  } catch(e){
-    console.error('Erreur de sauvegarde localStorage', e);
-  }
+function save(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(cards)); }
+  catch(e){ console.error('Erreur de sauvegarde', e); }
 }
 
-function loadConfig(){
-  try{
-    const raw = localStorage.getItem(CONFIG_KEY);
-    githubConfig = raw ? JSON.parse(raw) : null;
-  } catch(e){ githubConfig = null; }
-}
-function saveConfig(cfg){
-  githubConfig = cfg;
-  if(cfg){ localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg)); }
-  else { localStorage.removeItem(CONFIG_KEY); }
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 }
 
-/* ---------- GITHUB SYNC ---------- */
-function setSync(status, label){
-  const dot = document.getElementById('syncDot');
-  dot.className = 'sync-dot' + (status ? ' '+status : '');
-  document.getElementById('syncLabel').textContent = label;
-}
-
-function githubApiUrl(){
-  const c = githubConfig;
-  return `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${encodeURIComponent(c.path)}?ref=${encodeURIComponent(c.branch)}`;
-}
-
-async function fetchFromGithub(){
-  if(!githubConfig) return false;
-  setSync('busy', 'Synchronisation...');
-  try{
-    const res = await fetch(githubApiUrl(), {
-      headers: {
-        'Authorization': `Bearer ${githubConfig.token}`,
-        'Accept': 'application/vnd.github+json'
-      }
-    });
-    if(res.status === 404){
-      // fichier pas encore créé sur le repo : on le créera au premier enregistrement
-      currentSha = null;
-      setSync('ok', 'GitHub connecté (fichier à créer)');
-      return true;
-    }
-    if(!res.ok){
-      throw new Error('HTTP '+res.status);
-    }
-    const data = await res.json();
-    currentSha = data.sha;
-    const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
-    const parsed = JSON.parse(content);
-    state.cards = parsed.cards || [];
-    state.categories = parsed.categories || state.categories;
-    saveLocal();
-    setSync('ok', 'Synchronisé avec GitHub');
-    return true;
-  } catch(e){
-    console.error('Erreur de lecture GitHub', e);
-    setSync('err', 'Erreur de connexion GitHub — mode local');
-    return false;
-  }
-}
-
-async function pushToGithub(commitMessage){
-  if(!githubConfig) return;
-  setSync('busy', 'Enregistrement sur GitHub...');
-  try{
-    const payload = { cards: state.cards, categories: state.categories };
-    const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
-    const body = {
-      message: commitMessage || 'Mise à jour portfolio méthode logistique',
-      content: contentB64,
-      branch: githubConfig.branch
-    };
-    if(currentSha) body.sha = currentSha;
-
-    const res = await fetch(githubApiUrl().split('?')[0], {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${githubConfig.token}`,
-        'Accept': 'application/vnd.github+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
-    if(!res.ok){
-      const errText = await res.text();
-      throw new Error('HTTP '+res.status+' '+errText);
-    }
-    const data = await res.json();
-    currentSha = data.content.sha;
-    setSync('ok', 'Synchronisé avec GitHub');
-  } catch(e){
-    console.error('Erreur d\'écriture GitHub', e);
-    setSync('err', 'Échec de l\'enregistrement GitHub (sauvegardé en local seulement)');
-  }
-}
-
-async function persistChange(commitMessage){
-  saveLocal();
-  if(githubConfig){
-    await pushToGithub(commitMessage);
-  }
-}
-
-/* ---------- RENDER ---------- */
-function renderChips(){
-  const chipsEl = document.getElementById('chips');
-  const cats = ['Tous', ...state.categories];
-  chipsEl.innerHTML = cats.map(c =>
-    `<div class="chip ${state.activeCat===c ? 'active':''}" data-cat="${escapeAttr(c)}">${escapeHtml(c)}</div>`
-  ).join('');
-  chipsEl.querySelectorAll('.chip').forEach(chip=>{
-    chip.addEventListener('click', ()=>{
-      state.activeCat = chip.dataset.cat;
-      renderChips();
-      renderGrid();
-    });
-  });
-}
-
-function renderGrid(){
+function render(){
   const grid = document.getElementById('grid');
-  let cards = state.cards.filter(c=>{
-    const matchCat = state.activeCat==='Tous' || c.cat===state.activeCat;
-    const matchSearch = !state.search || (c.name+' '+c.desc).toLowerCase().includes(state.search.toLowerCase());
-    return matchCat && matchSearch;
-  });
+  const filtered = cards.filter(c =>
+    !search || (c.name+' '+c.desc).toLowerCase().includes(search.toLowerCase())
+  );
 
-  document.getElementById('countLabel').textContent = state.cards.length + ' outil(s) référencé(s)';
-  document.getElementById('statusMsg').textContent = githubConfig
-    ? `Synchronisé avec ${githubConfig.owner}/${githubConfig.repo}`
-    : 'Données stockées localement dans ce navigateur.';
-
-  if(cards.length===0){
-    grid.innerHTML = `<div class="empty"><strong>Rien à afficher ici</strong>Ajoute un outil ou change de filtre pour voir tes cartes.</div>`;
+  if(filtered.length===0){
+    grid.innerHTML = `<div class="empty"><strong>Rien à afficher ici</strong>Ajoute un outil ou change ta recherche.</div>`;
     return;
   }
 
-  grid.innerHTML = cards.map((c)=>{
-    const num = String(state.cards.indexOf(c)+1).padStart(2,'0');
+  grid.innerHTML = filtered.map(c=>{
     const urlSafe = c.url && c.url.trim() ? c.url.trim() : null;
-    const ink = inkFor(c.color);
     return `
-    <div class="card" style="--cat-color:${c.color}; --cat-ink:${ink}">
-      <div class="card-top">
-        <span class="eyebrow">${escapeHtml(c.cat||'—')}</span>
-        <span class="code">#${num}</span>
-      </div>
+    <div class="card">
       <h3>${escapeHtml(c.name)}</h3>
       <p>${escapeHtml(c.desc||'')}</p>
       <div class="card-actions">
         ${urlSafe
-          ? `<a class="btn link-open" href="${escapeAttr(urlSafe)}" target="_blank" rel="noopener">Ouvrir →</a>`
+          ? `<a class="btn link-open" href="${escapeHtml(urlSafe)}" target="_blank" rel="noopener">Ouvrir →</a>`
           : `<span class="btn link-open" style="opacity:0.5; cursor:default;">Pas de lien</span>`}
         <button class="btn icon-btn" title="Modifier" data-edit="${c.id}">✎</button>
         <button class="btn icon-btn" title="Supprimer" data-del="${c.id}">✕</button>
@@ -504,69 +233,27 @@ function renderGrid(){
     btn.addEventListener('click', ()=> openModal(btn.dataset.edit));
   });
   grid.querySelectorAll('[data-del]').forEach(btn=>{
-    btn.addEventListener('click', async ()=>{
-      const card = state.cards.find(c=>c.id===btn.dataset.del);
-      if(confirm('Supprimer cet outil de la liste ?')){
-        state.cards = state.cards.filter(c=>c.id!==btn.dataset.del);
-        await persistChange(`Suppression: ${card ? card.name : ''}`);
-        renderGrid();
+    btn.addEventListener('click', ()=>{
+      const card = cards.find(c=>c.id===btn.dataset.del);
+      if(confirm(`Supprimer "${card ? card.name : ''}" ?`)){
+        cards = cards.filter(c=>c.id!==btn.dataset.del);
+        save();
+        render();
       }
     });
   });
 }
 
-function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-}
-function escapeAttr(str){ return escapeHtml(str); }
-
-/* ---------- CARD MODAL ---------- */
-let editingId = null;
-
-function populateCategorySelect(){
-  const sel = document.getElementById('fCat');
-  sel.innerHTML = state.categories.map(c=>`<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
-}
-
-function populateColorRow(selected){
-  const row = document.getElementById('colorRow');
-  row.innerHTML = COLORS.map(c=>
-    `<div class="swatch ${c.color===selected?'selected':''}" style="background:${c.color}" data-color="${c.color}"></div>`
-  ).join('');
-  row.querySelectorAll('.swatch').forEach(sw=>{
-    sw.addEventListener('click', ()=>{
-      row.querySelectorAll('.swatch').forEach(s=>s.classList.remove('selected'));
-      sw.classList.add('selected');
-    });
-  });
-}
-
-function getSelectedColor(){
-  const sel = document.querySelector('#colorRow .swatch.selected');
-  return sel ? sel.dataset.color : COLORS[0].color;
-}
-
 function openModal(id){
   editingId = id || null;
-  populateCategorySelect();
-  const card = id ? state.cards.find(c=>c.id===id) : null;
-
+  const card = id ? cards.find(c=>c.id===id) : null;
   document.getElementById('modalTitle').textContent = card ? "Modifier l'outil" : 'Ajouter un outil';
   document.getElementById('fName').value = card ? card.name : '';
   document.getElementById('fUrl').value = card ? card.url : '';
   document.getElementById('fDesc').value = card ? card.desc : '';
-  document.getElementById('fNewCat').value = '';
-  if(card && !state.categories.includes(card.cat)){
-    state.categories.push(card.cat);
-    populateCategorySelect();
-  }
-  document.getElementById('fCat').value = card ? card.cat : state.categories[0];
-  populateColorRow(card ? card.color : COLORS[0].color);
-
   document.getElementById('overlay').classList.add('show');
   document.getElementById('fName').focus();
 }
-
 function closeModal(){
   document.getElementById('overlay').classList.remove('show');
   editingId = null;
@@ -578,145 +265,31 @@ document.getElementById('overlay').addEventListener('click', (e)=>{
   if(e.target.id==='overlay') closeModal();
 });
 
-document.getElementById('addCatBtn').addEventListener('click', ()=>{
-  const val = document.getElementById('fNewCat').value.trim();
-  if(!val) return;
-  if(!state.categories.includes(val)) state.categories.push(val);
-  populateCategorySelect();
-  document.getElementById('fCat').value = val;
-  document.getElementById('fNewCat').value = '';
-});
-
-document.getElementById('cardForm').addEventListener('submit', async (e)=>{
+document.getElementById('cardForm').addEventListener('submit', (e)=>{
   e.preventDefault();
   const name = document.getElementById('fName').value.trim();
   const url = document.getElementById('fUrl').value.trim();
   const desc = document.getElementById('fDesc').value.trim();
-  const cat = document.getElementById('fCat').value;
-  const color = getSelectedColor();
   if(!name || !url) return;
 
-  let commitMsg;
   if(editingId){
-    const card = state.cards.find(c=>c.id===editingId);
-    Object.assign(card, { name, url, desc, cat, color });
-    commitMsg = `Modification: ${name}`;
+    const card = cards.find(c=>c.id===editingId);
+    Object.assign(card, { name, url, desc });
   } else {
-    state.cards.push({ id: cryptoId(), name, url, desc, cat, color });
-    commitMsg = `Ajout: ${name}`;
+    cards.push({ id: makeId(), name, url, desc });
   }
-  renderChips();
-  renderGrid();
+  save();
+  render();
   closeModal();
-  await persistChange(commitMsg);
-  renderGrid();
 });
 
 document.getElementById('searchInput').addEventListener('input', (e)=>{
-  state.search = e.target.value;
-  renderGrid();
+  search = e.target.value;
+  render();
 });
 
-/* ---------- SETTINGS MODAL ---------- */
-function openSettings(){
-  const c = githubConfig || {};
-  document.getElementById('gOwner').value = c.owner || '';
-  document.getElementById('gRepo').value = c.repo || '';
-  document.getElementById('gBranch').value = c.branch || 'main';
-  document.getElementById('gPath').value = c.path || 'data.json';
-  document.getElementById('gToken').value = c.token || '';
-  document.getElementById('settingsOverlay').classList.add('show');
-}
-function closeSettings(){
-  document.getElementById('settingsOverlay').classList.remove('show');
-}
-
-document.getElementById('settingsBtn').addEventListener('click', openSettings);
-document.getElementById('settingsCancelBtn').addEventListener('click', closeSettings);
-document.getElementById('settingsOverlay').addEventListener('click', (e)=>{
-  if(e.target.id==='settingsOverlay') closeSettings();
-});
-document.getElementById('settingsClearBtn').addEventListener('click', ()=>{
-  saveConfig(null);
-  currentSha = null;
-  setSync('', 'Accès rapide // Poste méthode');
-  closeSettings();
-  renderGrid();
-});
-
-document.getElementById('settingsForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const cfg = {
-    owner: document.getElementById('gOwner').value.trim(),
-    repo: document.getElementById('gRepo').value.trim(),
-    branch: document.getElementById('gBranch').value.trim() || 'main',
-    path: document.getElementById('gPath').value.trim() || 'data.json',
-    token: document.getElementById('gToken').value.trim()
-  };
-  if(!cfg.owner || !cfg.repo || !cfg.token){
-    alert('Propriétaire, dépôt et token sont requis.');
-    return;
-  }
-  saveConfig(cfg);
-  closeSettings();
-  const ok = await fetchFromGithub();
-  if(ok && currentSha === null){
-    // fichier absent : on le crée tout de suite avec l'état courant
-    await pushToGithub('Création du fichier de données du portfolio');
-  }
-  renderChips();
-  renderGrid();
-});
-
-/* ---------- EXPORT / IMPORT (backup manuel) ---------- */
-document.getElementById('exportBtn').addEventListener('click', ()=>{
-  const blob = new Blob([JSON.stringify({cards:state.cards, categories:state.categories}, null, 2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'portfolio-methode-logistique-data.json';
-  a.click();
-});
-
-document.getElementById('importBtn').addEventListener('click', ()=>{
-  document.getElementById('importFile').click();
-});
-document.getElementById('importFile').addEventListener('change', async (e)=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = async () =>{
-    try{
-      const parsed = JSON.parse(reader.result);
-      if(parsed.cards){
-        state.cards = parsed.cards;
-        state.categories = parsed.categories || state.categories;
-        await persistChange('Import manuel de données');
-        renderChips();
-        renderGrid();
-      }
-    } catch(err){
-      alert('Fichier invalide.');
-    }
-  };
-  reader.readAsText(file);
-  e.target.value = '';
-});
-
-/* ---------- INIT ---------- */
-async function init(){
-  loadLocal();
-  loadConfig();
-  renderChips();
-  renderGrid();
-  if(githubConfig){
-    const ok = await fetchFromGithub();
-    if(ok){
-      renderChips();
-      renderGrid();
-    }
-  }
-}
-init();
+load();
+render();
 </script>
 
 </body>
