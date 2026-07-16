@@ -234,6 +234,7 @@ function setFooter(text, isError){
   el.className = isError ? 'error' : '';
 }
 
+// Le token n'est demandé que quand on en a vraiment besoin (sauvegarde), jamais pour lire.
 function getToken(){
   if(ghToken) return ghToken;
   let stored = null;
@@ -249,9 +250,22 @@ function getToken(){
   return ghToken;
 }
 
-async function githubGetFile(){
-  const token = getToken();
-  if(!token) throw new Error('Token manquant');
+// ---------- LECTURE : publique, aucun token requis (le dépôt est public) ----------
+async function githubGetFilePublic(){
+  const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(GH_PATH)}?ref=${encodeURIComponent(GH_BRANCH)}`, {
+    headers: { 'Accept': 'application/vnd.github+json' }
+  });
+  if(!res.ok){
+    const body = await res.text().catch(()=> '');
+    throw new Error(`GET ${res.status}${body ? ' — '+body.slice(0,150) : ''}`);
+  }
+  const data = await res.json();
+  const json = JSON.parse(b64DecodeUnicode(data.content));
+  return { json, sha: data.sha };
+}
+
+// ---------- LECTURE avec token : utilisée juste avant d'écrire, pour avoir le sha à jour ----------
+async function githubGetFileAuth(token){
   const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(GH_PATH)}?ref=${encodeURIComponent(GH_BRANCH)}`, {
     headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
   });
@@ -261,10 +275,10 @@ async function githubGetFile(){
     throw new Error(`GET ${res.status}${body ? ' — '+body.slice(0,150) : ''}`);
   }
   const data = await res.json();
-  const json = JSON.parse(b64DecodeUnicode(data.content));
-  return { json, sha: data.sha };
+  return { sha: data.sha };
 }
 
+// ---------- ÉCRITURE : nécessite un token ----------
 async function githubPutFile(obj, sha, message){
   const token = getToken();
   if(!token) throw new Error('Token manquant');
@@ -289,7 +303,7 @@ async function githubPutFile(obj, sha, message){
 
 async function loadFromGithub(){
   try{
-    const {json, sha} = await githubGetFile();
+    const {json, sha} = await githubGetFilePublic();
     cards = Array.isArray(json) ? json : (json.cards || []);
     currentSha = sha;
     cacheLocally();
@@ -313,7 +327,9 @@ async function persist(message){
   isSaving = true;
   setFooter('Enregistrement…');
   try{
-    const {sha} = await githubGetFile().catch(()=>({sha: currentSha}));
+    const token = getToken();
+    if(!token) throw new Error('Token requis pour enregistrer');
+    const {sha} = await githubGetFileAuth(token).catch(()=>({sha: currentSha}));
     const result = await githubPutFile(cards, sha || currentSha, message);
     currentSha = result.content.sha;
     setFooter('Données synchronisées avec GitHub.');
