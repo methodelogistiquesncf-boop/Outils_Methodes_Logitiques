@@ -35,59 +35,63 @@
     "id": "cnnp5yjim",
     "name": "Gestion contenants",
     "url": "https://methodelogistiquesncf-boop.github.io/Gestion_des_contenants/",
-    "desc": "Suivez, inventoriez et localisez l'ensemble de vos contenants (bois, métalliques, etc.)."
+    "desc": "Suivez, inventoriez et localisez l'ensemble de vos contenants (bois, métalliques, etc.).",
+    "color": "#f59e0b"
   },
   {
     "id": "cx4iri0n9",
     "name": "Demandes Popups",
     "url": "https://methodelogistiquesncf-boop.github.io/demande_popup/",
-    "desc": "Centralisez, modifiez et suivez l'état d'avancement de toutes vos demandes de popups dans Reflex"
+    "desc": "Centralisez, modifiez et suivez l'état d'avancement de toutes vos demandes de popups dans Reflex",
+    "color": "#ec4899"
   },
   {
     "id": "cabve2poj",
     "name": "Pilotage Projet",
     "url": "https://mikefri.github.io/Pilotage_Projet/",
-    "desc": "Planifiez, pilotez et coordonnez l'ensemble des projets collaboratifs au sein de l'équipe."
+    "desc": "Planifiez, pilotez et coordonnez l'ensemble des projets collaboratifs au sein de l'équipe.",
+    "color": "#8b5cf6"
   },
   {
     "id": "c5xte4ap1",
     "name": "Ticket_GLPI MCO",
     "url": "https://mikefri.github.io/Ticket_GLPI/login.html",
-    "desc": "Déclarez, suivez et traitez l'ensemble des demandes d'assistance auprès de l'équipe MCO."
+    "desc": "Déclarez, suivez et traitez l'ensemble des demandes d'assistance auprès de l'équipe MCO.",
+    "color": "#ef4444"
   },
   {
     "id": "cdjnyyxd5",
     "name": "Générateur codes-barres & QR",
     "url": "https://mikefri.github.io/GenCodeBarre/",
-    "desc": "Générez instantanément vos codes-barres et QR codes pour vos besoins."
+    "desc": "Générez instantanément vos codes-barres et QR codes pour vos besoins.",
+    "color": "#10b981"
   },
   {
     "id": "c2fzlxs7n",
     "name": "Planning Congés",
     "url": "https://mikefri.github.io/mes_conges/",
-    "desc": "Gérez et visualisez en un coup d'œil le planning des congés individuels et collectifs."
-  }
-  ,
+    "desc": "Gérez et visualisez en un coup d'œil le planning des congés individuels et collectifs.",
+    "color": "#06b6d4"
+  },
   {
     "id": "c2fzlxs7v",
-    "name": "Meteo",
+    "name": "Météo",
     "url": "https://mikefri-studio.github.io/Plein_Ciel/",
-    "desc": "Service de prévisions météorologiques couvrant la France métropolitaine et les Outre-Mer. Recherche par ville, département ou région, météo en direct, prévisions détaillées sur 15 jours et navigation"
+    "desc": "Service de prévisions météorologiques couvrant la France métropolitaine et les Outre-Mer. Recherche par ville, département ou région, météo en direct, prévisions détaillées sur 15 jours et navigation",
+    "color": "#3b82f6"
   },
   {
     "id": "c2fzlxs7Z",
     "name": "Planning Activités",
     "url": "https://methodelogistiquesncf-boop.github.io/Charge_Capa_equipe/",
-    "desc": "Charge / Capacité — Équipe Performance & Méthodes logistique"
+    "desc": "Charge / Capacité — Équipe Performance & Méthodes logistique",
+    "color": "#f97316"
   },
   {
-"id": "c2fz1xs7Z",
-"name": "Accueil_des_nouveaux_arrivants",
-"url": "https://methodelogistiquesncf-boop.github.io/Accueil_des_nouveaux_arrivants/",
-"desc": "Plateforme d'accueil dédiée aux nouveaux arrivants. Cet outil permet de suivre une checklist des démarches à effectuer avant l'arrivée du collaborateur et d'établir un planning structuré pour sa première semaine."
-}
+    "id": "c2fz1xs7Z",
+    "name": "Accueil des nouveaux arrivants",
+    "url": "https://methodelogistiquesncf-boop.github.io/Accueil_des_nouveaux_arrivants/",
+    "desc": "Plateforme d'accueil dédiée aux nouveaux arrivants. Cet outil permet de suivre une checklist des démarches à effectuer avant l'arrivée du collaborateur et d'établir un planning structuré pour sa première semaine.",
+    "color": "#84cc16"
+  }
 ]
-
-
-
-
