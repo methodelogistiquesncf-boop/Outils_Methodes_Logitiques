@@ -508,20 +508,28 @@
     }
 
     // --- GitHub API ---
-    async function loadData() {
-      try {
-        const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`);
-        if (!res.ok) throw new Error('Fichier non trouvé');
-        const data = await res.json();
-        currentSha = data.sha;
-        const content = atob(data.content);
-        cards = JSON.parse(content);
-      } catch (err) {
-        console.warn('Chargement GitHub échoué, utilisation des données locales.', err);
-        cards = fallbackData;
-      }
-      render();
+async function loadData() {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`);
+    if (!res.ok) throw new Error('Fichier non trouvé');
+    const data = await res.json();
+    currentSha = data.sha;
+    
+    // CORRECTION UTF-8 : utiliser TextDecoder au lieu de atob() seul
+    const binaryString = atob(data.content);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
     }
+    const content = new TextDecoder('utf-8').decode(bytes);
+    
+    cards = JSON.parse(content);
+  } catch (err) {
+    console.warn('Chargement GitHub échoué, utilisation des données locales.', err);
+    cards = fallbackData;
+  }
+  render();
+}
 
     async function saveToGitHub() {
       const btn = document.getElementById('saveBtn');
