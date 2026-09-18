@@ -218,23 +218,10 @@
       overflow: hidden;
     }
 
-    .card-icon img,
-    .card-icon svg {
+    .card-icon img {
       width: 28px;
       height: 28px;
       object-fit: contain;
-    }
-
-    /* Pour les SVG inline, on permet de mieux les contrôler */
-    .card-icon svg.inline-svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    .card-icon .fallback-icon {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--card-color, var(--accent));
     }
 
     .card h3 {
@@ -511,7 +498,7 @@
         <div class="form-group">
           <label for="fIcon">URL de l'icône (PNG ou SVG)</label>
           <input type="url" id="fIcon" placeholder="https://raw.githubusercontent.com/.../icon.png">
-          <small>Supporte les formats PNG, JPG, SVG. Laisse vide pour utiliser le favicon automatique.</small>
+          <small>Laisse vide pour utiliser le favicon automatique du site</small>
         </div>
         <div class="form-group">
           <label for="fColor">Couleur d'accentuation</label>
@@ -561,13 +548,6 @@
     };
     const getDomain = (url) => {
       try { return new URL(url).hostname; } catch (e) { return null; }
-    };
-
-    // Détecte si l'URL pointe vers un SVG
-    const isSvgUrl = (url) => {
-      if (!url) return false;
-      const lower = url.toLowerCase();
-      return lower.endsWith('.svg') || lower.includes('.svg?');
     };
 
     function loadOrder() {
@@ -629,44 +609,6 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    // Génère le HTML de l'icône selon le type
-    function buildIconHtml(c) {
-      const urlSafe = c.url && c.url.trim() ? c.url.trim() : null;
-      const fallback = `<span class="fallback-icon">${c.name.charAt(0).toUpperCase()}</span>`;
-      
-      // Cas 1 : Icône personnalisée fournie (PNG, JPG, SVG)
-      if (c.icon && c.icon.trim()) {
-        const iconUrl = escapeHtml(c.icon);
-        const isSvg = isSvgUrl(c.icon);
-        
-        if (isSvg) {
-          // Pour les SVG, on utilise <img> avec fallback
-          // Le SVG sera affiché correctement via la balise img
-          return `<img src="${iconUrl}" alt="icon" 
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                  ${fallback.replace('style="display:none;"', 'style="display:none;"')}`;
-        } else {
-          // PNG, JPG, etc.
-          return `<img src="${iconUrl}" alt="icon" 
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                  ${fallback.replace('style="display:none;"', 'style="display:none;"')}`;
-        }
-      }
-      
-      // Cas 2 : Favicon automatique du site
-      if (urlSafe) {
-        const domain = getDomain(urlSafe);
-        if (domain) {
-          return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="icon" 
-                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                  ${fallback.replace('style="display:none;"', 'style="display:none;"')}`;
-        }
-      }
-      
-      // Cas 3 : Fallback simple (première lettre)
-      return fallback;
-    }
-
     function render() {
       const grid = document.getElementById('grid');
       const filtered = cards.filter(c => 
@@ -688,7 +630,22 @@
         const tag = urlSafe ? 'a' : 'div';
         const hrefAttrs = urlSafe ? `href="${escapeHtml(urlSafe)}" target="_blank" rel="noopener"` : '';
         const color = c.color || '#3b82f6';
-        const iconHtml = buildIconHtml(c);
+        
+        // Logique simplifiée pour l'icône
+        let iconHtml = '';
+        
+        if (c.icon && c.icon.trim()) {
+          // Icône personnalisée (PNG ou SVG)
+          iconHtml = `<img src="${escapeHtml(c.icon)}" alt="icon">`;
+        } else if (urlSafe) {
+          // Favicon automatique
+          const domain = getDomain(urlSafe);
+          if (domain) {
+            iconHtml = `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="icon">`;
+          }
+        }
+        
+        // Si pas d'icône du tout, on laisse juste le fond coloré vide
 
         return `
         <${tag} class="card" 
@@ -704,7 +661,7 @@
           </div>
           <div class="card-header">
             <div class="card-icon">
-              ${iconHtml}
+              ${iconHtml || ''}
             </div>
             <h3>${escapeHtml(c.name)}</h3>
           </div>
