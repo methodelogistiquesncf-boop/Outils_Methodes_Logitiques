@@ -46,6 +46,9 @@
     "url": "https://methodelogistiquesncf-boop.github.io/demande_popup/",
     "desc": "Centralisez, modifiez et suivez l'état d'avancement de toutes vos demandes de popups dans Reflex",
     "color": "#ec4899"
+    "icon": "https://raw.githubusercontent.com/methodelogistiquesncf-boop/demande_popup/refs/heads/main/icons/icon.svg"
+
+    
   },
   {
     "id": "cabve2poj",
