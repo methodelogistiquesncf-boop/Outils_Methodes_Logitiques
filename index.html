@@ -31,7 +31,7 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
@@ -90,10 +90,10 @@
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
 
-    /* Grid */
+    /* Grid - 4 colonnes fixes */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
     }
 
@@ -224,32 +224,6 @@
       opacity: 0.3;
     }
 
-    /* Floating Add Button */
-    .fab {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background: var(--text-primary);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 64px;
-      height: 64px;
-      font-size: 32px;
-      cursor: pointer;
-      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    .fab:hover {
-      transform: scale(1.1) rotate(90deg);
-      background: var(--accent);
-    }
-
     /* Modal */
     .modal-overlay {
       position: fixed;
@@ -351,9 +325,14 @@
       grid-column: 1 / -1;
     }
 
+    /* Responsive : 2 colonnes tablette, 1 colonne mobile */
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
     @media (max-width: 640px) {
       .grid { grid-template-columns: 1fr; }
-      .card-actions { opacity: 1; } /* Always show actions on mobile */
+      .card-actions { opacity: 1; }
       header h1 { font-size: 1.8rem; }
     }
   </style>
@@ -377,8 +356,6 @@
       <div class="loading">Chargement des outils...</div>
     </div>
   </div>
-
-  <button class="fab" id="addBtn" title="Ajouter un outil">+</button>
 
   <!-- Modal -->
   <div class="modal-overlay" id="modalOverlay">
@@ -446,7 +423,6 @@
       return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     };
 
-    // Récupère le domaine pour le favicon, ou null
     const getDomain = (url) => {
       try {
         return new URL(url).hostname;
@@ -467,7 +443,7 @@
           <div class="empty-state">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <h3>Aucun outil trouvé</h3>
-            <p>Essayez avec d'autres mots-clés ou ajoutez un nouvel outil.</p>
+            <p>Essayez avec d'autres mots-clés.</p>
           </div>`;
         return;
       }
@@ -478,7 +454,6 @@
         const hrefAttrs = urlSafe ? `href="${escapeHtml(urlSafe)}" target="_blank" rel="noopener"` : '';
         const color = c.color || '#3b82f6';
         
-        // Magie des icônes : favicon du site OU première lettre du nom
         const domain = getDomain(urlSafe);
         let iconHtml = '';
         if (domain) {
@@ -530,11 +505,10 @@
     async function saveToGitHub() {
       const btn = document.getElementById('saveBtn');
       const originalText = btn.innerText;
-      btn.innerText = 'Sauvegarde en cours...';
+      btn.innerText = 'Sauvegarde...';
       btn.disabled = true;
 
       try {
-        // Si on n'a pas le SHA (premier chargement en erreur), on doit d'abord le récupérer
         if (!currentSha) {
           const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`);
           if (res.ok) {
@@ -543,7 +517,6 @@
           }
         }
 
-        // Récupérer le token (stocké en session pour simplifier)
         let token = sessionStorage.getItem('gh_token');
         if (!token) {
           token = prompt("Pour sauvegarder sur GitHub, veuillez entrer votre Personal Access Token (PAT) avec le scope 'repo' :");
@@ -561,7 +534,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            message: "chore: mise à jour des outils via l'interface",
+            message: "chore: mise à jour des outils",
             content: content,
             sha: currentSha,
             branch: GH_BRANCH
@@ -573,15 +546,13 @@
           throw new Error(errData.message || 'Erreur lors de la sauvegarde');
         }
 
-        // Rafraîchir le SHA pour la prochaine fois
         const newData = await res.json();
         currentSha = newData.content.sha;
         
         closeModal();
-        alert('✅ Outil enregistré avec succès sur GitHub !');
+        alert('✅ Enregistré !');
       } catch (err) {
         alert('❌ Erreur : ' + err.message);
-        console.error(err);
       } finally {
         btn.innerText = originalText;
         btn.disabled = false;
@@ -615,7 +586,7 @@
     }
 
     function deleteCard(id) {
-      if (confirm('Êtes-vous sûr de vouloir supprimer cet outil ?')) {
+      if (confirm('Supprimer cet outil ?')) {
         cards = cards.filter(c => c.id !== id);
         render();
         saveToGitHub();
@@ -628,7 +599,6 @@
       render();
     });
 
-    document.getElementById('addBtn').addEventListener('click', () => openModal());
     document.getElementById('cancelBtn').addEventListener('click', closeModal);
     
     modalOverlay.addEventListener('click', (e) => {
