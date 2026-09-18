@@ -1,441 +1,664 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Outils // Méthode Logistique</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #f6f4ee;
-    --panel: #ffffff;
-    --panel-hover: #fbf9f4;
-    --border: #e8e2d5;
-    --text: #33322d;
-    --muted: #948d7d;
-    --amber: #eeb96a;
-    --amber-ink: #6b4a17;
-    --red: #e2948d;
-    --red-ink: #7a3129;
-    --shadow-sm: 0 1px 3px rgba(80,64,30,0.06);
-    --shadow-md: 0 10px 30px rgba(80,64,30,0.10);
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:
-      radial-gradient(1000px 500px at 100% -10%, rgba(238,185,106,0.10), transparent 60%),
-      var(--bg);
-    color:var(--text);
-    font-family:'Inter', sans-serif;
-    min-height:100vh;
-  }
-  .wrap{max-width:1600px; margin:0 auto; padding:40px 40px 80px;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outils & Méthodes Logistiques</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #3b82f6;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    }
 
-  header{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:28px; border-bottom:1px solid var(--border); padding-bottom:20px;}
-  h1{font-family:'Space Grotesk', sans-serif; font-size:30px; margin:0; font-weight:700; letter-spacing:-0.5px; color:#2a2924;}
-  .sub{color:var(--muted); font-size:13px; margin-top:6px;}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 20px;
+    }
 
-  button, .btn{
-    font-family:'Inter', sans-serif;
-    border:1px solid var(--border);
-    background:var(--panel);
-    color:var(--text);
-    padding:10px 16px;
-    border-radius:10px;
-    font-size:13px;
-    cursor:pointer;
-    box-shadow:var(--shadow-sm);
-    transition: border-color .15s ease, background .15s ease, transform .1s ease, box-shadow .15s ease;
-    display:inline-flex; align-items:center; gap:8px;
-  }
-  button:hover{border-color:#d9cfb8; background:var(--panel-hover); box-shadow:var(--shadow-md);}
-  button:active{transform:scale(0.98);}
-  .btn-primary{background:var(--amber); color:var(--amber-ink); border-color:var(--amber); font-weight:600;}
-  .btn-primary:hover{background:#f2c785; border-color:#f2c785;}
-  .btn-ghost{background:transparent; box-shadow:none;}
-  .btn-ghost:hover{box-shadow:var(--shadow-sm);}
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-  .search{
-    width:100%;
-    background:var(--panel); border:1px solid var(--border); border-radius:10px;
-    padding:11px 14px; color:var(--text); font-size:14px; box-shadow:var(--shadow-sm);
-    margin-bottom:20px;
-  }
-  .search::placeholder{color:var(--muted);}
-  .search:focus{outline:none; border-color:var(--amber);}
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-top: 20px;
+    }
 
-  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:12px;}
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
 
-  .card{
-    position:relative;
-    display:block;
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px 16px;
-    box-shadow:var(--shadow-sm);
-    text-decoration:none;
-    color:inherit;
-    cursor:pointer;
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-  }
-  .card:hover{transform:translateY(-2px); border-color:var(--amber); box-shadow:var(--shadow-md);}
-  .card h3{
-    font-family:'Space Grotesk', sans-serif; font-size:15px; margin:0 0 4px; font-weight:700;
-    color:#2a2924; padding-right:44px;
-    display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;
-  }
-  .card p{
-    font-size:12px; color:var(--muted); line-height:1.4; margin:0;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-  }
-  .card.no-link{cursor:default;}
-  .card-actions{
-    position:absolute; top:10px; right:10px; display:flex; gap:2px;
-    opacity:0; transition:opacity .12s ease;
-  }
-  .card:hover .card-actions, .card:focus-within .card-actions{opacity:1;}
-  .icon-btn{
-    border:none; background:transparent; box-shadow:none; color:var(--muted);
-    padding:4px 6px; font-size:13px; border-radius:6px; line-height:1;
-  }
-  .icon-btn:hover{background:#f1ece0; color:var(--text); box-shadow:none;}
-  .icon-btn.del:hover{background:#fbeae8; color:var(--red-ink);}
+    header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
 
-  .empty{
-    grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--muted);
-    border:1px dashed var(--border); border-radius:16px; font-size:14px; background:var(--panel);
-  }
-  .empty strong{color:var(--text); display:block; font-family:'Space Grotesk',sans-serif; font-size:17px; margin-bottom:8px;}
+    /* Search Bar */
+    .search-wrapper {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+    }
 
-  footer{margin-top:32px; padding-top:16px; border-top:1px solid var(--border); color:var(--muted); font-size:12px; text-align:right;}
-  footer.error{color:var(--red-ink);}
+    .search-wrapper svg {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      width: 20px;
+      height: 20px;
+    }
 
-  .overlay{
-    position:fixed; inset:0; background:rgba(60,50,30,0.25); backdrop-filter:blur(3px);
-    display:none; align-items:center; justify-content:center; z-index:50; padding:20px;
-  }
-  .overlay.show{display:flex;}
-  .modal{
-    background:var(--panel); border:1px solid var(--border); border-radius:18px;
-    width:100%; max-width:420px; padding:26px;
-    box-shadow: 0 24px 60px rgba(60,50,20,0.18);
-  }
-  .modal h2{font-family:'Space Grotesk', sans-serif; margin:0 0 18px; font-size:19px; color:#2a2924;}
-  .field{margin-bottom:14px;}
-  .field label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px;}
-  .field input, .field textarea{
-    width:100%; background:#fbf9f4; border:1px solid var(--border); border-radius:10px;
-    padding:10px 12px; color:var(--text); font-size:14px; font-family:'Inter', sans-serif;
-  }
-  .field input:focus, .field textarea:focus{outline:none; border-color:var(--amber);}
-  .field textarea{resize:vertical; min-height:60px;}
-  .modal-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:20px;}
+    .search-input {
+      width: 100%;
+      padding: 16px 16px 16px 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--card-bg);
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
 
-  @media (max-width:600px){
-    h1{font-size:24px;}
-    .wrap{padding:24px 16px 60px;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;}
-  }
-</style>
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--card-color, var(--accent));
+      box-shadow: var(--shadow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: transparent;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background-color: color-mix(in srgb, var(--card-color, var(--accent)) 10%, white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .card-icon img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .card-icon .fallback-icon {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--card-color, var(--accent));
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .card:hover .card-actions {
+      opacity: 1;
+    }
+
+    .btn-action {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-action:hover {
+      background: var(--bg-color);
+      color: var(--text-primary);
+    }
+
+    .btn-action.delete:hover {
+      background: #fef2f2;
+      color: #ef4444;
+      border-color: #fecaca;
+    }
+
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    /* Floating Add Button */
+    .fab {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--text-primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      font-size: 32px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .fab:hover {
+      transform: scale(1.1) rotate(90deg);
+      background: var(--accent);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 32px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal h2 {
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+    .btn-ghost:hover { background: var(--bg-color); }
+
+    .btn-primary {
+      background: var(--text-primary);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--accent); }
+
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+      .card-actions { opacity: 1; } /* Always show actions on mobile */
+      header h1 { font-size: 1.8rem; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Méthodes Logistiques — Outils</h1>
-      <div class="sub">Tous les outils du service, réunis au même endroit.</div>
+  <div class="container">
+    <header>
+      <h1>🛠️ Outils & Méthodes Logistiques</h1>
+      <p>Tous les outils du service, réunis au même endroit.</p>
+    </header>
+
+    <div class="search-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Rechercher un outil (ex: pilotage, congés...)">
     </div>
-    <button class="btn-primary" id="addBtn">+ Ajouter un outil</button>
-  </header>
 
-  <input type="text" class="search" id="searchInput" placeholder="Rechercher un outil...">
-
-  <div class="grid" id="grid"></div>
-
-  <footer id="footerNote">Données synchronisées avec GitHub.</footer>
-</div>
-
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <h2 id="modalTitle">Ajouter un outil</h2>
-    <form id="cardForm">
-      <div class="field">
-        <label>Nom de l'outil</label>
-        <input type="text" id="fName" required placeholder="Ex: Pilotage M00">
-      </div>
-      <div class="field">
-        <label>Lien (URL)</label>
-        <input type="text" id="fUrl" required placeholder="https://...">
-      </div>
-      <div class="field">
-        <label>Description courte</label>
-        <textarea id="fDesc" placeholder="Ex: Suivi de production, tableau par jour"></textarea>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn-ghost" id="cancelBtn">Annuler</button>
-        <button type="submit" class="btn-primary" id="saveBtn">Enregistrer</button>
-      </div>
-    </form>
+    <div class="grid" id="grid">
+      <div class="loading">Chargement des outils...</div>
+    </div>
   </div>
-</div>
 
-<script>
-/* ================================================================
-   CONFIGURATION GITHUB — à remplir une seule fois par toi.
-   GH_OWNER = ton nom d'utilisateur / organisation GitHub
-   GH_REPO  = juste le NOM du dépôt (celui après github.io/ dans ton URL Pages),
-              PAS l'URL complète.
-   ================================================================ */
-const GH_OWNER  = 'methodelogistiquesncf-boop';
-const GH_REPO   = 'Outils_Methodes_Logitiques'; // vérifie bien la casse exacte sur GitHub
-const GH_BRANCH = 'main';
-const GH_PATH   = 'data.json';
-/* ================================================================ */
+  <button class="fab" id="addBtn" title="Ajouter un outil">+</button>
 
-const TOKEN_KEY = 'logi_portfolio_gh_token_v1';
-const LOCAL_CACHE_KEY = 'logi_portfolio_cache_v1';
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h2 id="modalTitle">Ajouter un outil</h2>
+      <form id="cardForm">
+        <input type="hidden" id="fId">
+        <div class="form-group">
+          <label for="fName">Nom de l'outil *</label>
+          <input type="text" id="fName" required placeholder="Ex: Pilotage M00">
+        </div>
+        <div class="form-group">
+          <label for="fUrl">Lien (URL)</label>
+          <input type="url" id="fUrl" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label for="fDesc">Description courte</label>
+          <textarea id="fDesc" rows="3" placeholder="À quoi sert cet outil ?"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="fColor">Couleur d'accentuation (optionnel)</label>
+          <input type="color" id="fColor" value="#3b82f6" style="height: 45px; padding: 4px;">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelBtn">Annuler</button>
+          <button type="submit" class="btn btn-primary" id="saveBtn">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-function makeId(){ return 'c'+Math.random().toString(36).slice(2,10); }
+  <script>
+    // --- Configuration GitHub ---
+    const GH_OWNER = 'methodelogistiquesncf-boop';
+    const GH_REPO = 'Outils_Methodes_Logitiques';
+    const GH_PATH = 'data.json';
+    const GH_BRANCH = 'main';
+    
+    // --- État ---
+    let cards = [];
+    let currentSha = null;
+    let search = '';
 
-const fallbackData = [
-  { id: makeId(), name:'Pilotage M00', url:'', desc:'Suivi de production, tableau par jour.' },
-  { id: makeId(), name:'Complet Conforme', url:'', desc:'Contrôle de conformité des kits.' },
-  { id: makeId(), name:'Analyse Excel F-Activités', url:'', desc:'Analyse des fichiers F-Activités et A-Delta.' },
-];
+    // --- Données de secours (votre JSON actuel) ---
+    const fallbackData = [
+      { "id": "cjlbumrvc", "name": "Complet Conforme", "url": "https://methodelogistiquesncf-boop.github.io/completconforme/", "desc": "Contrôlez la conformité et validez l'exhaustivité de vos kits lors de la préparation.", "cat": "Qualité", "color": "#4caf7d" },
+      { "id": "c1351ehqa", "name": "Création logigramme", "url": "https://methodelogistiquesncf-boop.github.io/Cr-ation_logigramme/", "desc": "Créez, modélisez et cartographiez facilement vos processus et logigrammes métiers.", "cat": "Outils perso", "color": "#9b8ee0" },
+      { "id": "cfmyjgloo", "name": "Correcteur", "url": "https://methodelogistiquesncf-boop.github.io/Correcteurs/", "desc": "Vérifiez et corrigez instantanément l'orthographe et la grammaire de vos textes professionnels.", "cat": "Outils perso", "color": "#5b8dd6" },
+      { "id": "ccllojnqq", "name": "Pilotage M00", "url": "https://methodelogistiquesncf-boop.github.io/PilotageM00/login.html", "desc": "Suivez l'état d'avancement de vos kits et pilotez les manquants d'approvisionnement.", "cat": "Pilotage", "color": "#5b8dd6" },
+      { "id": "cnnp5yjim", "name": "Gestion contenants", "url": "https://methodelogistiquesncf-boop.github.io/Gestion_des_contenants/", "desc": "Suivez, inventoriez et localisez l'ensemble de vos contenants (bois, métalliques, etc.).", "color": "#f59e0b" },
+      { "id": "cx4iri0n9", "name": "Demandes Popups", "url": "https://methodelogistiquesncf-boop.github.io/demande_popup/", "desc": "Centralisez, modifiez et suivez l'état d'avancement de toutes vos demandes de popups dans Reflex", "color": "#ec4899" },
+      { "id": "cabve2poj", "name": "Pilotage Projet", "url": "https://mikefri.github.io/Pilotage_Projet/", "desc": "Planifiez, pilotez et coordonnez l'ensemble des projets collaboratifs au sein de l'équipe.", "color": "#8b5cf6" },
+      { "id": "c5xte4ap1", "name": "Ticket_GLPI MCO", "url": "https://mikefri.github.io/Ticket_GLPI/login.html", "desc": "Déclarez, suivez et traitez l'ensemble des demandes d'assistance auprès de l'équipe MCO.", "color": "#ef4444" },
+      { "id": "cdjnyyxd5", "name": "Générateur codes-barres & QR", "url": "https://mikefri.github.io/GenCodeBarre/", "desc": "Générez instantanément vos codes-barres et QR codes pour vos besoins.", "color": "#10b981" },
+      { "id": "c2fzlxs7n", "name": "Planning Congés", "url": "https://mikefri.github.io/mes_conges/", "desc": "Gérez et visualisez en un coup d'œil le planning des congés individuels et collectifs.", "color": "#06b6d4" },
+      { "id": "c2fzlxs7v", "name": "Meteo", "url": "https://mikefri-studio.github.io/Plein_Ciel/", "desc": "Service de prévisions météorologiques couvrant la France métropolitaine et les Outre-Mer.", "color": "#3b82f6" },
+      { "id": "c2fzlxs7Z", "name": "Planning Activités", "url": "https://methodelogistiquesncf-boop.github.io/Charge_Capa_equipe/", "desc": "Charge / Capacité — Équipe Performance & Méthodes logistique", "color": "#f97316" },
+      { "id": "c2fz1xs7Z", "name": "Accueil des nouveaux arrivants", "url": "https://methodelogistiquesncf-boop.github.io/Accueil_des_nouveaux_arrivants/", "desc": "Plateforme d'accueil dédiée aux nouveaux arrivants. Checklist et planning de la première semaine.", "color": "#84cc16" }
+    ];
 
-let cards = [];
-let search = '';
-let editingId = null;
-let currentSha = null;
-let ghToken = null;
-let isSaving = false;
-let pendingSave = false;
+    // --- Fonctions Utilitaires ---
+    const makeId = () => 'c' + Math.random().toString(36).substr(2, 9);
+    const escapeHtml = (unsafe) => {
+      if (!unsafe) return '';
+      return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    };
 
-function b64EncodeUnicode(str){
-  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m,p1)=>String.fromCharCode('0x'+p1)));
-}
-function b64DecodeUnicode(str){
-  return decodeURIComponent(atob(str).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-}
-function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-}
-
-function setFooter(text, isError){
-  const el = document.getElementById('footerNote');
-  el.textContent = text;
-  el.className = isError ? 'error' : '';
-}
-
-// Le token n'est demandé que quand on en a vraiment besoin (sauvegarde), jamais pour lire.
-function getToken(){
-  if(ghToken) return ghToken;
-  let stored = null;
-  try{ stored = localStorage.getItem(TOKEN_KEY); }catch(e){}
-  if(stored){ ghToken = stored; return ghToken; }
-  const entered = prompt(
-    "Connexion GitHub (une seule fois) :\nColle ton token d'accès personnel (Contents: Read & write sur ce dépôt)."
-  );
-  if(entered && entered.trim()){
-    ghToken = entered.trim();
-    try{ localStorage.setItem(TOKEN_KEY, ghToken); }catch(e){}
-  }
-  return ghToken;
-}
-
-// ---------- LECTURE : publique, aucun token requis (le dépôt est public) ----------
-async function githubGetFilePublic(){
-  const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(GH_PATH)}?ref=${encodeURIComponent(GH_BRANCH)}`, {
-    headers: { 'Accept': 'application/vnd.github+json' }
-  });
-  if(!res.ok){
-    const body = await res.text().catch(()=> '');
-    throw new Error(`GET ${res.status}${body ? ' — '+body.slice(0,150) : ''}`);
-  }
-  const data = await res.json();
-  const json = JSON.parse(b64DecodeUnicode(data.content));
-  return { json, sha: data.sha };
-}
-
-// ---------- LECTURE avec token : utilisée juste avant d'écrire, pour avoir le sha à jour ----------
-async function githubGetFileAuth(token){
-  const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(GH_PATH)}?ref=${encodeURIComponent(GH_BRANCH)}`, {
-    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
-  });
-  if(!res.ok){
-    if(res.status === 401){ try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} ghToken = null; }
-    const body = await res.text().catch(()=> '');
-    throw new Error(`GET ${res.status}${body ? ' — '+body.slice(0,150) : ''}`);
-  }
-  const data = await res.json();
-  return { sha: data.sha };
-}
-
-// ---------- ÉCRITURE : nécessite un token ----------
-async function githubPutFile(obj, sha, message){
-  const token = getToken();
-  if(!token) throw new Error('Token manquant');
-  const body = {
-    message: message || 'Mise à jour du portfolio',
-    content: b64EncodeUnicode(JSON.stringify(obj, null, 2)),
-    branch: GH_BRANCH
-  };
-  if(sha) body.sha = sha;
-  const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(GH_PATH)}`, {
-    method:'PUT',
-    headers: { 'Authorization': `token ${token}`, 'Accept':'application/vnd.github+json', 'Content-Type':'application/json' },
-    body: JSON.stringify(body)
-  });
-  if(!res.ok){
-    if(res.status === 401){ try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} ghToken = null; }
-    const errBody = await res.json().catch(()=>({}));
-    throw new Error(errBody.message || `PUT ${res.status}`);
-  }
-  return await res.json();
-}
-
-async function loadFromGithub(){
-  try{
-    const {json, sha} = await githubGetFilePublic();
-    cards = Array.isArray(json) ? json : (json.cards || []);
-    currentSha = sha;
-    cacheLocally();
-    setFooter('Crée par Méthodes Logistiques.');
-  }catch(e){
-    console.error(e);
-    const raw = localStorage.getItem(LOCAL_CACHE_KEY);
-    cards = raw ? JSON.parse(raw) : fallbackData;
-    setFooter("Impossible de charger data.json depuis GitHub — affichage local.", true);
-  }
-  render();
-}
-
-function cacheLocally(){
-  try{ localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(cards)); }catch(e){}
-}
-
-async function persist(message){
-  cacheLocally();
-  if(isSaving){ pendingSave = true; return; }
-  isSaving = true;
-  setFooter('Enregistrement…');
-  try{
-    const token = getToken();
-    if(!token) throw new Error('Token requis pour enregistrer');
-    const {sha} = await githubGetFileAuth(token).catch(()=>({sha: currentSha}));
-    const result = await githubPutFile(cards, sha || currentSha, message);
-    currentSha = result.content.sha;
-    setFooter('Données synchronisées avec GitHub.');
-  }catch(e){
-    console.error(e);
-    setFooter("Échec de l'enregistrement sur GitHub : "+e.message, true);
-  }finally{
-    isSaving = false;
-    if(pendingSave){ pendingSave = false; persist('Mise à jour du portfolio'); }
-  }
-}
-
-function render(){
-  const grid = document.getElementById('grid');
-  const filtered = cards.filter(c =>
-    !search || (c.name+' '+(c.desc||'')).toLowerCase().includes(search.toLowerCase())
-  );
-
-  if(filtered.length===0){
-    grid.innerHTML = `<div class="empty"><strong>Rien à afficher ici</strong>Ajoute un outil ou change ta recherche.</div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(c=>{
-    const urlSafe = c.url && c.url.trim() ? c.url.trim() : null;
-    const tag = urlSafe ? 'a' : 'div';
-    const hrefAttrs = urlSafe ? `href="${escapeHtml(urlSafe)}" target="_blank" rel="noopener"` : '';
-    return `
-    <${tag} class="card ${urlSafe?'':'no-link'}" ${hrefAttrs} title="${urlSafe ? 'Ouvrir '+escapeHtml(c.name) : 'Pas de lien renseigné'}">
-      <h3>${escapeHtml(c.name)}</h3>
-      <p>${escapeHtml(c.desc||'')}</p>
-      <div class="card-actions">
-        <button type="button" class="icon-btn" title="Modifier" data-edit="${c.id}">✎</button>
-        <button type="button" class="icon-btn del" title="Supprimer" data-del="${c.id}">✕</button>
-      </div>
-    </${tag}>`;
-  }).join('');
-
-  grid.querySelectorAll('[data-edit]').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      e.preventDefault(); e.stopPropagation();
-      openModal(btn.dataset.edit);
-    });
-  });
-  grid.querySelectorAll('[data-del]').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      e.preventDefault(); e.stopPropagation();
-      const card = cards.find(c=>c.id===btn.dataset.del);
-      if(confirm(`Supprimer "${card ? card.name : ''}" ?`)){
-        cards = cards.filter(c=>c.id!==btn.dataset.del);
-        render();
-        persist(`Suppression : ${card ? card.name : ''}`);
+    // Récupère le domaine pour le favicon, ou null
+    const getDomain = (url) => {
+      try {
+        return new URL(url).hostname;
+      } catch (e) {
+        return null;
       }
+    };
+
+    // --- Rendu ---
+    function render() {
+      const grid = document.getElementById('grid');
+      const filtered = cards.filter(c => 
+        !search || (c.name + ' ' + (c.desc || '')).toLowerCase().includes(search.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <h3>Aucun outil trouvé</h3>
+            <p>Essayez avec d'autres mots-clés ou ajoutez un nouvel outil.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(c => {
+        const urlSafe = c.url && c.url.trim() ? c.url.trim() : null;
+        const tag = urlSafe ? 'a' : 'div';
+        const hrefAttrs = urlSafe ? `href="${escapeHtml(urlSafe)}" target="_blank" rel="noopener"` : '';
+        const color = c.color || '#3b82f6';
+        
+        // Magie des icônes : favicon du site OU première lettre du nom
+        const domain = getDomain(urlSafe);
+        let iconHtml = '';
+        if (domain) {
+          iconHtml = `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                      <span class="fallback-icon" style="display:none;">${c.name.charAt(0).toUpperCase()}</span>`;
+        } else {
+          iconHtml = `<span class="fallback-icon">${c.name.charAt(0).toUpperCase()}</span>`;
+        }
+
+        return `
+        <${tag} class="card" style="--card-color: ${color};" ${hrefAttrs} title="${urlSafe ? 'Ouvrir ' + escapeHtml(c.name) : 'Pas de lien renseigné'}">
+          <div class="card-header">
+            <div class="card-icon">
+              ${iconHtml}
+            </div>
+            <h3>${escapeHtml(c.name)}</h3>
+          </div>
+          <p>${escapeHtml(c.desc || 'Aucune description.')}</p>
+          <div class="card-actions">
+            <button type="button" class="btn-action" onclick="event.preventDefault(); openModal('${c.id}')" title="Modifier">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+              Modifier
+            </button>
+            <button type="button" class="btn-action delete" onclick="event.preventDefault(); deleteCard('${c.id}')" title="Supprimer">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              Supprimer
+            </button>
+          </div>
+        </${tag}>`;
+      }).join('');
+    }
+
+    // --- GitHub API ---
+    async function loadData() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`);
+        if (!res.ok) throw new Error('Fichier non trouvé');
+        const data = await res.json();
+        currentSha = data.sha;
+        const content = atob(data.content);
+        cards = JSON.parse(content);
+      } catch (err) {
+        console.warn('Chargement GitHub échoué, utilisation des données locales.', err);
+        cards = fallbackData;
+      }
+      render();
+    }
+
+    async function saveToGitHub() {
+      const btn = document.getElementById('saveBtn');
+      const originalText = btn.innerText;
+      btn.innerText = 'Sauvegarde en cours...';
+      btn.disabled = true;
+
+      try {
+        // Si on n'a pas le SHA (premier chargement en erreur), on doit d'abord le récupérer
+        if (!currentSha) {
+          const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`);
+          if (res.ok) {
+            const data = await res.json();
+            currentSha = data.sha;
+          }
+        }
+
+        // Récupérer le token (stocké en session pour simplifier)
+        let token = sessionStorage.getItem('gh_token');
+        if (!token) {
+          token = prompt("Pour sauvegarder sur GitHub, veuillez entrer votre Personal Access Token (PAT) avec le scope 'repo' :");
+          if (!token) throw new Error("Annulé par l'utilisateur");
+          sessionStorage.setItem('gh_token', token);
+        }
+
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(cards, null, 2))));
+        
+        const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: "chore: mise à jour des outils via l'interface",
+            content: content,
+            sha: currentSha,
+            branch: GH_BRANCH
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.message || 'Erreur lors de la sauvegarde');
+        }
+
+        // Rafraîchir le SHA pour la prochaine fois
+        const newData = await res.json();
+        currentSha = newData.content.sha;
+        
+        closeModal();
+        alert('✅ Outil enregistré avec succès sur GitHub !');
+      } catch (err) {
+        alert('❌ Erreur : ' + err.message);
+        console.error(err);
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // --- Gestion du Modal ---
+    const modalOverlay = document.getElementById('modalOverlay');
+    const cardForm = document.getElementById('cardForm');
+
+    function openModal(id = null) {
+      document.getElementById('modalTitle').innerText = id ? 'Modifier l\'outil' : 'Ajouter un outil';
+      if (id) {
+        const card = cards.find(c => c.id === id);
+        document.getElementById('fId').value = card.id;
+        document.getElementById('fName').value = card.name;
+        document.getElementById('fUrl').value = card.url || '';
+        document.getElementById('fDesc').value = card.desc || '';
+        document.getElementById('fColor').value = card.color || '#3b82f6';
+      } else {
+        cardForm.reset();
+        document.getElementById('fId').value = '';
+        document.getElementById('fColor').value = '#3b82f6';
+      }
+      modalOverlay.classList.add('active');
+      document.getElementById('fName').focus();
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+    }
+
+    function deleteCard(id) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer cet outil ?')) {
+        cards = cards.filter(c => c.id !== id);
+        render();
+        saveToGitHub();
+      }
+    }
+
+    // --- Événements ---
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      search = e.target.value;
+      render();
     });
-  });
-}
 
-function openModal(id){
-  editingId = id || null;
-  const card = id ? cards.find(c=>c.id===id) : null;
-  document.getElementById('modalTitle').textContent = card ? "Modifier l'outil" : 'Ajouter un outil';
-  document.getElementById('fName').value = card ? card.name : '';
-  document.getElementById('fUrl').value = card ? card.url : '';
-  document.getElementById('fDesc').value = card ? card.desc : '';
-  document.getElementById('overlay').classList.add('show');
-  document.getElementById('fName').focus();
-}
-function closeModal(){
-  document.getElementById('overlay').classList.remove('show');
-  editingId = null;
-}
+    document.getElementById('addBtn').addEventListener('click', () => openModal());
+    document.getElementById('cancelBtn').addEventListener('click', closeModal);
+    
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
 
-document.getElementById('addBtn').addEventListener('click', ()=> openModal(null));
-document.getElementById('cancelBtn').addEventListener('click', closeModal);
-document.getElementById('overlay').addEventListener('click', (e)=>{
-  if(e.target.id==='overlay') closeModal();
-});
+    cardForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('fId').value;
+      const newCard = {
+        id: id || makeId(),
+        name: document.getElementById('fName').value.trim(),
+        url: document.getElementById('fUrl').value.trim(),
+        desc: document.getElementById('fDesc').value.trim(),
+        color: document.getElementById('fColor').value
+      };
 
-document.getElementById('cardForm').addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const name = document.getElementById('fName').value.trim();
-  const url = document.getElementById('fUrl').value.trim();
-  const desc = document.getElementById('fDesc').value.trim();
-  if(!name || !url) return;
+      if (id) {
+        const index = cards.findIndex(c => c.id === id);
+        cards[index] = { ...cards[index], ...newCard };
+      } else {
+        cards.push(newCard);
+      }
 
-  let message;
-  if(editingId){
-    const card = cards.find(c=>c.id===editingId);
-    Object.assign(card, { name, url, desc });
-    message = `Modification : ${name}`;
-  } else {
-    cards.push({ id: makeId(), name, url, desc });
-    message = `Ajout : ${name}`;
-  }
-  render();
-  closeModal();
-  persist(message);
-});
+      render();
+      saveToGitHub();
+    });
 
-document.getElementById('searchInput').addEventListener('input', (e)=>{
-  search = e.target.value;
-  render();
-});
-
-loadFromGithub();
-</script>
-
+    // --- Initialisation ---
+    loadData();
+  </script>
 </body>
 </html>
