@@ -16,8 +16,8 @@
       --text-secondary: #64748b;
       --accent: #3b82f6;
       --border: #e2e8f0;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-      --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+      --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 8px 12px -2px rgba(0, 0, 0, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,58 +26,57 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-primary);
-      line-height: 1.6;
-      padding: 20px;
+      line-height: 1.5;
+      padding: 16px;
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1800px; /* Élargi pour accueillir 6 colonnes confortablement */
       margin: 0 auto;
     }
 
     /* Header */
     header {
       text-align: center;
-      margin-bottom: 40px;
-      padding-top: 20px;
+      margin-bottom: 32px;
+      padding-top: 16px;
     }
 
     header h1 {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
+      margin-bottom: 6px;
     }
 
     header p {
       color: var(--text-secondary);
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
     /* Search Bar */
     .search-wrapper {
       position: relative;
-      max-width: 600px;
-      margin: 0 auto 40px auto;
+      max-width: 500px;
+      margin: 0 auto 32px auto;
     }
 
     .search-wrapper svg {
       position: absolute;
-      left: 16px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-secondary);
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
 
     .search-input {
       width: 100%;
-      padding: 16px 16px 16px 48px;
+      padding: 12px 12px 12px 42px;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 1rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
       font-family: inherit;
       background: var(--card-bg);
       transition: all 0.2s ease;
@@ -90,53 +89,53 @@
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
 
-    /* Grid - 4 colonnes fixes */
+    /* Grid - 6 colonnes par défaut */
     .grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
     }
 
-    /* Card */
+    /* Card - Version compacte */
     .card {
       background: var(--card-bg);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 10px;
+      padding: 16px;
       text-decoration: none;
       color: inherit;
       border: 1px solid var(--border);
-      border-left: 4px solid var(--card-color, var(--accent));
+      border-left: 3px solid var(--card-color, var(--accent));
       box-shadow: var(--shadow);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       display: flex;
       flex-direction: column;
-      animation: fadeIn 0.4s ease-out;
+      animation: fadeIn 0.3s ease-out;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-3px);
       box-shadow: var(--shadow-hover);
       border-color: transparent;
     }
 
     .card-header {
       display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 12px;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
     }
 
     .card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background-color: color-mix(in srgb, var(--card-color, var(--accent)) 10%, white);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: color-mix(in srgb, var(--card-color, var(--accent)) 12%, white);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -145,37 +144,47 @@
     }
 
     .card-icon img {
-      width: 28px;
-      height: 28px;
+      width: 20px;
+      height: 20px;
       object-fit: contain;
     }
 
     .card-icon .fallback-icon {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--card-color, var(--accent));
     }
 
     .card h3 {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-weight: 600;
       color: var(--text-primary);
       line-height: 1.3;
+      /* Limite à 2 lignes max pour garder les cartes basses */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .card p {
-      font-size: 0.95rem;
+      font-size: 0.8rem;
       color: var(--text-secondary);
-      line-height: 1.5;
+      line-height: 1.4;
       flex-grow: 1;
+      /* Limite à 3 lignes max pour éviter l'étirement */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .card-actions {
       display: flex;
       justify-content: flex-end;
-      gap: 8px;
-      margin-top: 16px;
-      padding-top: 16px;
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid var(--border);
       opacity: 0;
       transition: opacity 0.2s ease;
@@ -188,15 +197,15 @@
     .btn-action {
       background: none;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 0.85rem;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.75rem;
       cursor: pointer;
       color: var(--text-secondary);
       transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
     }
 
     .btn-action:hover {
@@ -214,13 +223,13 @@
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 60px 20px;
+      padding: 40px 20px;
       color: var(--text-secondary);
     }
     .empty-state svg {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 16px;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
       opacity: 0.3;
     }
 
@@ -243,10 +252,10 @@
 
     .modal {
       background: var(--card-bg);
-      border-radius: 20px;
-      padding: 32px;
+      border-radius: 16px;
+      padding: 24px;
       width: 100%;
-      max-width: 500px;
+      max-width: 450px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       animation: modalIn 0.3s ease;
     }
@@ -257,29 +266,29 @@
     }
 
     .modal h2 {
-      margin-bottom: 24px;
-      font-size: 1.5rem;
+      margin-bottom: 20px;
+      font-size: 1.25rem;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: var(--text-primary);
     }
 
     .form-group input, .form-group textarea {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 8px;
       font-family: inherit;
-      font-size: 1rem;
+      font-size: 0.95rem;
       transition: border-color 0.2s;
     }
 
@@ -291,17 +300,17 @@
     .modal-actions {
       display: flex;
       justify-content: flex-end;
-      gap: 12px;
-      margin-top: 32px;
+      gap: 10px;
+      margin-top: 24px;
     }
 
     .btn {
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
       border: none;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       transition: all 0.2s;
     }
 
@@ -325,15 +334,29 @@
       grid-column: 1 / -1;
     }
 
-    /* Responsive : 2 colonnes tablette, 1 colonne mobile */
-    @media (max-width: 1024px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
+    /* --- RESPONSIVE --- */
+    /* Grand écran : 6 colonnes (défaut) */
+    
+    /* Écran moyen (laptop 13-14") : 4 colonnes */
+    @media (max-width: 1400px) {
+      .grid { grid-template-columns: repeat(4, 1fr); }
     }
     
-    @media (max-width: 640px) {
+    /* Tablette paysage : 3 colonnes */
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    
+    /* Tablette portrait / Petit écran : 2 colonnes */
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .card-actions { opacity: 1; } /* Toujours visible sur mobile */
+    }
+    
+    /* Mobile : 1 colonne */
+    @media (max-width: 480px) {
       .grid { grid-template-columns: 1fr; }
-      .card-actions { opacity: 1; }
-      header h1 { font-size: 1.8rem; }
+      header h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -349,7 +372,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
-      <input type="text" class="search-input" id="searchInput" placeholder="Rechercher un outil (ex: pilotage, congés...)">
+      <input type="text" class="search-input" id="searchInput" placeholder="Rechercher un outil...">
     </div>
 
     <div class="grid" id="grid">
@@ -376,8 +399,8 @@
           <textarea id="fDesc" rows="3" placeholder="À quoi sert cet outil ?"></textarea>
         </div>
         <div class="form-group">
-          <label for="fColor">Couleur d'accentuation (optionnel)</label>
-          <input type="color" id="fColor" value="#3b82f6" style="height: 45px; padding: 4px;">
+          <label for="fColor">Couleur d'accentuation</label>
+          <input type="color" id="fColor" value="#3b82f6" style="height: 40px; padding: 4px; width: 100%;">
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-ghost" id="cancelBtn">Annuler</button>
@@ -399,7 +422,7 @@
     let currentSha = null;
     let search = '';
 
-    // --- Données de secours (votre JSON actuel) ---
+    // --- Données de secours ---
     const fallbackData = [
       { "id": "cjlbumrvc", "name": "Complet Conforme", "url": "https://methodelogistiquesncf-boop.github.io/completconforme/", "desc": "Contrôlez la conformité et validez l'exhaustivité de vos kits lors de la préparation.", "cat": "Qualité", "color": "#4caf7d" },
       { "id": "c1351ehqa", "name": "Création logigramme", "url": "https://methodelogistiquesncf-boop.github.io/Cr-ation_logigramme/", "desc": "Créez, modélisez et cartographiez facilement vos processus et logigrammes métiers.", "cat": "Outils perso", "color": "#9b8ee0" },
@@ -474,12 +497,10 @@
           <p>${escapeHtml(c.desc || 'Aucune description.')}</p>
           <div class="card-actions">
             <button type="button" class="btn-action" onclick="event.preventDefault(); openModal('${c.id}')" title="Modifier">
-              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-              Modifier
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
             </button>
             <button type="button" class="btn-action delete" onclick="event.preventDefault(); deleteCard('${c.id}')" title="Supprimer">
-              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-              Supprimer
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </button>
           </div>
         </${tag}>`;
