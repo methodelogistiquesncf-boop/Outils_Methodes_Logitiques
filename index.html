@@ -54,7 +54,7 @@
       font-size: 1rem;
     }
 
-    /* Search Bar + Reset Button */
+    /* Toolbar */
     .toolbar {
       display: flex;
       gap: 12px;
@@ -125,7 +125,7 @@
       height: 16px;
     }
 
-    /* Grid - 6 colonnes par défaut */
+    /* Grid - 6 colonnes */
     .grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -169,7 +169,6 @@
       border-color: transparent;
     }
 
-    /* État pendant le drag */
     .card.dragging {
       opacity: 0.4;
       transform: scale(0.95);
@@ -178,7 +177,6 @@
       cursor: grabbing;
     }
 
-    /* Indicateur visuel de drag (poignée) */
     .drag-handle {
       position: absolute;
       top: 8px;
@@ -208,7 +206,7 @@
       align-items: flex-start;
       gap: 10px;
       margin-bottom: 8px;
-      padding-right: 20px; /* Espace pour la poignée */
+      padding-right: 20px;
     }
 
     .card-icon {
@@ -224,8 +222,8 @@
     }
 
     .card-icon img {
-      width: 20px;
-      height: 20px;
+      width: 28px;
+      height: 28px;
       object-fit: contain;
     }
 
@@ -297,7 +295,6 @@
       border-color: #fecaca;
     }
 
-    /* Empty State */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
@@ -311,7 +308,6 @@
       opacity: 0.3;
     }
 
-    /* Toast notification */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -335,7 +331,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -435,7 +430,6 @@
       grid-column: 1 / -1;
     }
 
-    /* Responsive */
     @media (max-width: 1400px) {
       .grid { grid-template-columns: repeat(4, 1fr); }
     }
@@ -445,7 +439,7 @@
     @media (max-width: 768px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
       .card-actions { opacity: 1; }
-      .card { cursor: default; } /* Désactive le drag sur mobile */
+      .card { cursor: default; }
       .drag-handle { display: none; }
     }
     @media (max-width: 480px) {
@@ -460,7 +454,7 @@
 
   <div class="container">
     <header>
-      <h1>️ Outils & Méthodes Logistiques</h1>
+      <h1>🛠️ Outils & Méthodes Logistiques</h1>
       <p>Tous les outils du service, réunis au même endroit.</p>
     </header>
 
@@ -484,10 +478,8 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <!-- Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <h2 id="modalTitle">Ajouter un outil</h2>
@@ -506,6 +498,10 @@
           <textarea id="fDesc" rows="3" placeholder="À quoi sert cet outil ?"></textarea>
         </div>
         <div class="form-group">
+          <label for="fIcon">URL de l'icône (optionnel)</label>
+          <input type="url" id="fIcon" placeholder="https://raw.githubusercontent.com/...">
+        </div>
+        <div class="form-group">
           <label for="fColor">Couleur d'accentuation</label>
           <input type="color" id="fColor" value="#3b82f6" style="height: 40px; padding: 4px; width: 100%;">
         </div>
@@ -518,23 +514,20 @@
   </div>
 
   <script>
-    // --- Configuration GitHub ---
     const GH_OWNER = 'methodelogistiquesncf-boop';
     const GH_REPO = 'Outils_Methodes_Logitiques';
     const GH_PATH = 'data.json';
     const GH_BRANCH = 'main';
     const STORAGE_KEY = `tools_order_${GH_OWNER}_${GH_REPO}`;
     
-    // --- État ---
     let cards = [];
     let currentSha = null;
     let search = '';
     let draggedId = null;
     let isDragging = false;
 
-    // --- Données de secours ---
     const fallbackData = [
-      { "id": "cjlbumrvc", "name": "Complet Conforme", "url": "https://methodelogistiquesncf-boop.github.io/completconforme/", "desc": "Contrôlez la conformité et validez l'exhaustivité de vos kits lors de la préparation.", "cat": "Qualité", "color": "#4caf7d" },
+      { "id": "cjlbumrvc", "name": "Complet Conforme", "url": "https://methodelogistiquesncf-boop.github.io/completconforme/", "desc": "Contrôlez la conformité et validez l'exhaustivité de vos kits lors de la préparation.", "cat": "Qualité", "color": "#4caf7d", "icon": "https://raw.githubusercontent.com/methodelogistiquesncf-boop/completconforme/main/icons/icon-192x192.png" },
       { "id": "c1351ehqa", "name": "Création logigramme", "url": "https://methodelogistiquesncf-boop.github.io/Cr-ation_logigramme/", "desc": "Créez, modélisez et cartographiez facilement vos processus et logigrammes métiers.", "cat": "Outils perso", "color": "#9b8ee0" },
       { "id": "cfmyjgloo", "name": "Correcteur", "url": "https://methodelogistiquesncf-boop.github.io/Correcteurs/", "desc": "Vérifiez et corrigez instantanément l'orthographe et la grammaire de vos textes professionnels.", "cat": "Outils perso", "color": "#5b8dd6" },
       { "id": "ccllojnqq", "name": "Pilotage M00", "url": "https://methodelogistiquesncf-boop.github.io/PilotageM00/login.html", "desc": "Suivez l'état d'avancement de vos kits et pilotez les manquants d'approvisionnement.", "cat": "Pilotage", "color": "#5b8dd6" },
@@ -549,7 +542,6 @@
       { "id": "c2fz1xs7Z", "name": "Accueil des nouveaux arrivants", "url": "https://methodelogistiquesncf-boop.github.io/Accueil_des_nouveaux_arrivants/", "desc": "Plateforme d'accueil dédiée aux nouveaux arrivants. Cet outil permet de suivre une checklist des démarches à effectuer avant l'arrivée du collaborateur et d'établir un planning structuré pour sa première semaine.", "color": "#84cc16" }
     ];
 
-    // --- Utilitaires ---
     const makeId = () => 'c' + Math.random().toString(36).substr(2, 9);
     const escapeHtml = (unsafe) => {
       if (!unsafe) return '';
@@ -559,7 +551,6 @@
       try { return new URL(url).hostname; } catch (e) { return null; }
     };
 
-    // --- Gestion de l'ordre personnalisé (localStorage) ---
     function loadOrder() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -585,14 +576,10 @@
       const savedOrder = loadOrder();
       if (!savedOrder || !Array.isArray(savedOrder)) return;
 
-      // Créer un map pour accès rapide
       const cardMap = new Map(cards.map(c => [c.id, c]));
-      
-      // Reconstruire le tableau selon l'ordre sauvegardé
       const ordered = [];
       const seen = new Set();
       
-      // D'abord, les IDs dans l'ordre sauvegardé (s'ils existent encore)
       for (const id of savedOrder) {
         if (cardMap.has(id)) {
           ordered.push(cardMap.get(id));
@@ -600,7 +587,6 @@
         }
       }
       
-      // Ensuite, les nouveaux outils non présents dans l'ordre sauvegardé
       for (const card of cards) {
         if (!seen.has(card.id)) {
           ordered.push(card);
@@ -611,14 +597,12 @@
     }
 
     function updateOrderAfterDrag() {
-      // Extraire l'ordre actuel des IDs depuis le DOM
       const grid = document.getElementById('grid');
       const cardElements = grid.querySelectorAll('.card');
       const newOrder = Array.from(cardElements).map(el => el.dataset.id);
       saveOrder(newOrder);
     }
 
-    // --- Toast notification ---
     function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
@@ -626,7 +610,6 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    // --- Rendu ---
     function render() {
       const grid = document.getElementById('grid');
       const filtered = cards.filter(c => 
@@ -649,12 +632,26 @@
         const hrefAttrs = urlSafe ? `href="${escapeHtml(urlSafe)}" target="_blank" rel="noopener"` : '';
         const color = c.color || '#3b82f6';
         
-        const domain = getDomain(urlSafe);
+        // Logique d'affichage des icônes avec 3 niveaux de fallback
         let iconHtml = '';
-        if (domain) {
-          iconHtml = `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        
+        if (c.icon && c.icon.trim()) {
+          // Priorité 1 : Icône personnalisée du JSON
+          iconHtml = `<img src="${escapeHtml(c.icon)}" alt="icon" 
+                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                       <span class="fallback-icon" style="display:none;">${c.name.charAt(0).toUpperCase()}</span>`;
+        } else if (urlSafe) {
+          // Priorité 2 : Favicon automatique du site
+          const domain = getDomain(urlSafe);
+          if (domain) {
+            iconHtml = `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="icon" 
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <span class="fallback-icon" style="display:none;">${c.name.charAt(0).toUpperCase()}</span>`;
+          } else {
+            iconHtml = `<span class="fallback-icon">${c.name.charAt(0).toUpperCase()}</span>`;
+          }
         } else {
+          // Priorité 3 : Juste la première lettre
           iconHtml = `<span class="fallback-icon">${c.name.charAt(0).toUpperCase()}</span>`;
         }
 
@@ -688,47 +685,34 @@
         </${tag}>`;
       }).join('');
 
-      // Attacher les événements de drag après le rendu
       attachDragEvents();
     }
 
-    // --- Drag & Drop ---
     function attachDragEvents() {
       const cardsElements = document.querySelectorAll('.card');
       
       cardsElements.forEach(card => {
-        // DRAG START
         card.addEventListener('dragstart', (e) => {
           draggedId = card.dataset.id;
           isDragging = true;
           card.classList.add('dragging');
-          
-          // Nécessaire pour Firefox
           e.dataTransfer.effectAllowed = 'move';
           e.dataTransfer.setData('text/plain', draggedId);
-          
-          // Petit délai pour que le style s'applique
           setTimeout(() => {
             card.style.opacity = '0.4';
           }, 0);
         });
 
-        // DRAG END
         card.addEventListener('dragend', (e) => {
           card.classList.remove('dragging');
           card.style.opacity = '';
           draggedId = null;
-          
-          // Petit délai avant de reset le flag pour éviter le clic fantôme
           setTimeout(() => {
             isDragging = false;
           }, 100);
-          
-          // Sauvegarder le nouvel ordre
           updateOrderAfterDrag();
         });
 
-        // DRAG OVER (sur les autres cartes)
         card.addEventListener('dragover', (e) => {
           e.preventDefault();
           e.dataTransfer.dropEffect = 'move';
@@ -739,20 +723,16 @@
           const draggingEl = grid.querySelector(`[data-id="${draggedId}"]`);
           if (!draggingEl) return;
           
-          // Calculer la position de la souris par rapport au centre de la carte cible
           const rect = card.getBoundingClientRect();
           const midpoint = rect.left + rect.width / 2;
           
           if (e.clientX < midpoint) {
-            // Insérer avant
             grid.insertBefore(draggingEl, card);
           } else {
-            // Insérer après
             grid.insertBefore(draggingEl, card.nextSibling);
           }
         });
 
-        // Empêcher le lien de s'ouvrir si on a drag
         if (card.tagName === 'A') {
           card.addEventListener('click', (e) => {
             if (isDragging) {
@@ -764,7 +744,6 @@
       });
     }
 
-    // --- GitHub API (avec fix UTF-8) ---
     async function loadData() {
       try {
         const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`);
@@ -772,7 +751,6 @@
         const data = await res.json();
         currentSha = data.sha;
         
-        // Fix UTF-8 : décoder correctement les accents
         const binaryString = atob(data.content);
         const bytes = new Uint8Array(binaryString.length);
         for (let i = 0; i < binaryString.length; i++) {
@@ -786,7 +764,6 @@
         cards = fallbackData;
       }
       
-      // Appliquer l'ordre personnalisé de l'utilisateur
       applyCustomOrder();
       render();
     }
@@ -848,7 +825,6 @@
       }
     }
 
-    // --- Modal ---
     const modalOverlay = document.getElementById('modalOverlay');
     const cardForm = document.getElementById('cardForm');
 
@@ -860,6 +836,7 @@
         document.getElementById('fName').value = card.name;
         document.getElementById('fUrl').value = card.url || '';
         document.getElementById('fDesc').value = card.desc || '';
+        document.getElementById('fIcon').value = card.icon || '';
         document.getElementById('fColor').value = card.color || '#3b82f6';
       } else {
         cardForm.reset();
@@ -882,7 +859,6 @@
       }
     }
 
-    // --- Événements ---
     document.getElementById('searchInput').addEventListener('input', (e) => {
       search = e.target.value;
       render();
@@ -894,11 +870,9 @@
       if (e.target === modalOverlay) closeModal();
     });
 
-    // Bouton Réinitialiser l'ordre
     document.getElementById('resetOrderBtn').addEventListener('click', () => {
       if (confirm('Réinitialiser l\'ordre personnalisé ? Les outils reprendront leur ordre par défaut.')) {
         clearOrder();
-        // Recharger depuis GitHub pour retrouver l'ordre d'origine
         loadData();
         showToast('🔄 Ordre réinitialisé');
       }
@@ -912,6 +886,7 @@
         name: document.getElementById('fName').value.trim(),
         url: document.getElementById('fUrl').value.trim(),
         desc: document.getElementById('fDesc').value.trim(),
+        icon: document.getElementById('fIcon').value.trim(),
         color: document.getElementById('fColor').value
       };
 
@@ -920,14 +895,12 @@
         cards[index] = { ...cards[index], ...newCard };
       } else {
         cards.push(newCard);
-        // Le nouvel outil sera ajouté à la fin (géré par applyCustomOrder)
       }
 
       render();
       saveToGitHub();
     });
 
-    // --- Initialisation ---
     loadData();
   </script>
 </body>
