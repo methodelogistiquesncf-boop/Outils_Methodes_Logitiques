@@ -31,6 +31,7 @@
     "desc": "Suivez l'état d'avancement de vos kits et pilotez les manquants d'approvisionnement.",
     "cat": "Pilotage",
     "color": "#5b8dd6"
+    "icon": "https://raw.githubusercontent.com/methodelogistiquesncf-boop/PilotageM00/refs/heads/main/icons/logo.svg"
   },
   {
     "id": "cnnp5yjim",
