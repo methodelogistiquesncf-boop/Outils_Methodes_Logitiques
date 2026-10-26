@@ -16,15 +16,7 @@
     "cat": "Outils perso",
     "color": "#5b8dd6"
   },
-  {
-    "id": "ccllojnqq",
-    "name": "Pilotage M00",
-    "url": "https://methodelogistiquesncf-boop.github.io/PilotageM00/login.html",
-    "desc": "Suivez l'état d'avancement de vos kits et pilotez les manquants d'approvisionnement.",
-    "cat": "Pilotage",
-    "color": "#5b8dd6"
-    "icon": "https://raw.githubusercontent.com/methodelogistiquesncf-boop/PilotageM00/refs/heads/main/icons/logo.svg"
-  },
+
   {
     "id": "cnnp5yjim",
     "name": "Gestion contenants",
@@ -42,13 +34,7 @@
 
     
   },
-  {
-    "id": "cabve2poj",
-    "name": "Pilotage Projet",
-    "url": "https://mikefri.github.io/Pilotage_Projet/",
-    "desc": "Planifiez, pilotez et coordonnez l'ensemble des projets collaboratifs au sein de l'équipe.",
-    "color": "#8b5cf6"
-  },
+ 
   {
     "id": "c5xte4ap1",
     "name": "Ticket_GLPI MCO",
