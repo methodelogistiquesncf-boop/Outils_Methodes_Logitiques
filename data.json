@@ -80,5 +80,12 @@
     "url": "https://methodelogistiquesncf-boop.github.io/Accueil_des_nouveaux_arrivants/",
     "desc": "Plateforme d'accueil dédiée aux nouveaux arrivants. Checklist et planning de la première semaine.",
     "color": "#84cc16"
+  },
+  {
+    "id": "c2fzgfgdf",
+    "name": "Suivi demandes Géoparts",
+    "url": "https://methodelogistiquesncf-boop.github.io/Geoparts/",
+    "desc": "Permet de suivre les demandes auprès de notre prestataire Geoparts, concernant les outils digitaux et autres.",
+    "color": "#84cc16"
   }
 ]
