@@ -88,4 +88,12 @@
     "desc": "Permet de suivre les demandes auprès de notre prestataire Geoparts, concernant les outils digitaux et autres.",
     "color": "#84cc16"
   }
+  ,
+  {
+    "id": "c2fzzertgfgdf",
+    "name": "Impressions libres sur étiquettes Avery",
+    "url": "https://app.avery.fr/dpo8/appeu/target;name=FR_fr;ep=EUP/product;templateCategory=Etiquettes%20exp%C3%A9dition;product=654df037351d30c5fa8519a8b8ffaa3c;profile=YouPrint;category=8ace9c12dcf6031cf8cc1f451e3cb29a/design;product=654df037351d30c5fa8519a8b8ffaa3c;source=SelectDesign/customize;path=tmpUser%2Fprojects%2Fe4374bf7ee41f638f86250112f93595a%2Fe4374bf7ee41f638f86250112f93595a.xml;storage=fsEUPTemp/ctx;consumer=AveryEU;product=654df037351d30c5fa8519a8b8ffaa3c/view?customize&",
+    "desc": "Impressions libres sur étiquettes Avery",
+    "color": "#84cc16"
+  }
 ]
